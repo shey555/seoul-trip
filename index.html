@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🇰🇷 ソウル女子旅 2026</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ec4899">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ソウル旅">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root {
+    --pink: #f472b6;
+    --pink-light: #fdf2f8;
+    --pink-mid: #fbcfe8;
+    --coral: #fb7185;
+    --purple: #a855f7;
+    --purple-light: #f5f3ff;
+    --green: #34d399;
+    --green-light: #ecfdf5;
+    --blue: #60a5fa;
+    --blue-light: #eff6ff;
+    --yellow: #fbbf24;
+    --yellow-light: #fffbeb;
+    --gray: #6b7280;
+    --gray-light: #f9fafb;
+    --white: #ffffff;
+    --dark: #1f2937;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    background: linear-gradient(135deg, #fdf2f8 0%, #f5f3ff 50%, #eff6ff 100%);
+    min-height: 100vh;
+    color: var(--dark);
+  }
+
+  /* ヘッダー */
+  .header {
+    background: linear-gradient(135deg, #ec4899, #a855f7, #6366f1);
+    color: white;
+    padding: 24px 20px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  }
+  .header-flag { font-size: 56px; margin-bottom: 10px; }
+  .header h1 { font-size: 30px; font-weight: 800; letter-spacing: 1px; }
+  .header p { font-size: 17px; opacity: 0.9; margin-top: 6px; }
+  .header-dates {
+    display: flex; gap: 12px; justify-content: center; margin-top: 16px;
+  }
+  .header-date-badge {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ナビタブ */
+  .nav {
+    display: flex;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+  }
+  .nav-tab {
+    flex: 1;
+    padding: 16px 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray);
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    min-width: 60px;
+  }
+  .nav-tab.active {
+    color: #ec4899;
+    border-bottom-color: #ec4899;
+  }
+  .nav-tab:hover { background: var(--pink-light); }
+
+  /* メインコンテンツ */
+  .container { padding: 16px; max-width: 480px; margin: 0 auto; }
+
+  /* セクション */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* カード */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* フライトカード */
+  .flight-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .flight-row.outbound { background: var(--blue-light); }
+  .flight-row.inbound { background: var(--pink-light); }
+  .flight-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .flight-badge.out { background: var(--blue); color: white; }
+  .flight-badge.in { background: var(--coral); color: white; }
+  .flight-info { flex: 1; }
+  .flight-time { font-size: 22px; font-weight: 800; color: var(--dark); }
+  .flight-airport { font-size: 14px; color: var(--gray); }
+  .flight-arrow { color: var(--gray); font-size: 22px; }
+  .flight-no { font-size: 13px; color: var(--gray); font-weight: 600; }
+
+  /* ホテルカード */
+  .hotel-hero {
+    background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
+    border-radius: 12px;
+    padding: 16px;
+    color: white;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hotel-hero::after {
+    content: '🏯';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 48px;
+    opacity: 0.3;
+  }
+  .hotel-name { font-size: 19px; font-weight: 800; }
+  .hotel-sub { font-size: 15px; opacity: 0.85; margin-top: 4px; }
+  .hotel-stars { margin-top: 8px; font-size: 15px; }
+  .hotel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .hotel-item {
+    background: var(--purple-light);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+  .hotel-item-label { color: var(--gray); font-size: 13px; margin-bottom: 2px; }
+  .hotel-item-value { font-weight: 700; }
+
+  /* タイムライン */
+  .timeline { position: relative; padding-left: 20px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, #ec4899, #a855f7, #6366f1);
+    border-radius: 2px;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 16px;
+    padding-left: 20px;
+  }
+  .timeline-dot {
+    position: absolute;
+    left: -13px;
+    top: 10px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+    border: 2.5px solid #ec4899;
+    z-index: 1;
+  }
+  .timeline-dot.special { background: #ec4899; border-color: #ec4899; }
+  .timeline-dot.airport { background: #6366f1; border-color: #6366f1; }
+  .timeline-time {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ec4899;
+    margin-bottom: 4px;
+  }
+  .timeline-card {
+    background: var(--gray-light);
+    border-radius: 12px;
+    padding: 14px 16px;
+    border-left: 3px solid transparent;
+  }
+  .timeline-card.food { border-color: #f59e0b; background: var(--yellow-light); }
+  .timeline-card.shop { border-color: #ec4899; background: var(--pink-light); }
+  .timeline-card.move { border-color: #60a5fa; background: var(--blue-light); }
+  .timeline-card.hotel { border-color: #a855f7; background: var(--purple-light); }
+  .timeline-card.money { border-color: #34d399; background: var(--green-light); }
+  .timeline-card.fun { border-color: #fb7185; background: #fff1f2; }
+  .timeline-place {
+    font-size: 17px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .timeline-desc { font-size: 14px; color: var(--gray); line-height: 1.6; }
+  .timeline-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+  .badge-reserve { background: #fee2e2; color: #dc2626; }
+  .badge-tip { background: #dbeafe; color: #2563eb; }
+  .badge-highlight { background: #fce7f3; color: #be185d; }
+
+  /* 日付ヘッダー */
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    color: white;
+    font-weight: 800;
+  }
+  .day-header.day1 { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+  .day-header.day2 { background: linear-gradient(135deg, #10b981, #3b82f6); }
+  .day-header.day3 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+  .day-number { font-size: 34px; font-weight: 900; opacity: 0.8; }
+  .day-title { font-size: 18px; }
+  .day-date { font-size: 15px; opacity: 0.85; }
+
+  /* チェックリスト */
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 14px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    background: var(--gray-light);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .checklist-item.checked {
+    background: var(--green-light);
+    opacity: 0.7;
+  }
+  .checklist-item.checked .check-name { text-decoration: line-through; color: var(--gray); }
+  .check-box {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2.5px solid #d1d5db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    margin-top: 1px;
+  }
+  .checklist-item.checked .check-box {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .check-icon { font-size: 20px; flex-shrink: 0; }
+  .check-name { font-size: 16px; font-weight: 600; }
+  .check-time { font-size: 13px; color: var(--gray); margin-top: 3px; }
+  .check-progress {
+    background: var(--gray-light);
+    border-radius: 20px;
+    height: 10px;
+    margin: 12px 0 16px;
+    overflow: hidden;
+  }
+  .check-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), #10b981);
+    border-radius: 20px;
+    transition: width 0.5s ease;
+  }
+  .check-count { font-size: 15px; color: var(--gray); margin-bottom: 8px; }
+
+  /* 予算 */
+  .budget-total {
+    background: linear-gradient(135deg, #ec4899, #a855f7);
+    border-radius: 14px;
+    padding: 16px;
+    color: white;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .budget-total-label { font-size: 16px; opacity: 0.85; }
+  .budget-total-amount { font-size: 38px; font-weight: 900; margin: 6px 0; }
+  .budget-total-sub { font-size: 15px; opacity: 0.8; }
+  .budget-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .budget-row:last-child { border-bottom: none; }
+  .budget-label { display: flex; align-items: center; gap: 8px; font-size: 16px; }
+  .budget-amount { font-size: 17px; font-weight: 700; }
+  .budget-note { font-size: 13px; color: var(--gray); }
+
+  /* 予約リスト */
+  .reserve-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border: 1.5px solid;
+  }
+  .reserve-item.urgent { border-color: #fca5a5; background: #fff5f5; }
+  .reserve-item.recommend { border-color: #fde68a; background: #fffbeb; }
+  .reserve-priority {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .priority-must { background: #dc2626; color: white; }
+  .priority-good { background: #f59e0b; color: white; }
+  .reserve-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .reserve-reason { font-size: 14px; color: var(--gray); }
+  .reserve-how { font-size: 14px; font-weight: 600; margin-top: 6px; color: #7c3aed; }
+
+  /* ヒント */
+  .tip-item {
+    display: flex;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--blue-light);
+    margin-bottom: 8px;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ========== 小遣い帳 ========== */
+  .kakeibo-hero {
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    border-radius: 16px;
+    padding: 20px;
+    color: white;
+    margin-bottom: 14px;
+  }
+  .kakeibo-hero-label { font-size: 15px; opacity: 0.9; }
+  .kakeibo-hero-total { font-size: 36px; font-weight: 900; margin: 4px 0; }
+  .kakeibo-hero-sub { font-size: 14px; opacity: 0.85; }
+
+  .member-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .member-card {
+    background: white;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid;
+  }
+  .member-card.m0 { border-color: #ec4899; }
+  .member-card.m1 { border-color: #a855f7; }
+  .member-card.m2 { border-color: #3b82f6; }
+  .member-card.m3 { border-color: #f59e0b; }
+  .member-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+  .member-paid { font-size: 20px; font-weight: 700; }
+  .member-paid-label { font-size: 12px; color: var(--gray); }
+  .member-balance {
+    margin-top: 8px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .balance-plus { background: #dcfce7; color: #16a34a; }
+  .balance-minus { background: #fee2e2; color: #dc2626; }
+  .balance-zero { background: #f3f4f6; color: #6b7280; }
+
+  .add-expense-form {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .form-row { margin-bottom: 12px; }
+  .form-label { font-size: 13px; font-weight: 700; color: var(--gray); margin-bottom: 5px; display: block; }
+  .form-input, .form-select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+  }
+  .form-input:focus, .form-select:focus { border-color: #ec4899; }
+  .form-row-half { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .add-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #ec4899, #a855f7);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .add-btn:active { opacity: 0.85; }
+
+  .expense-list { margin-bottom: 14px; }
+  .expense-item {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .expense-cat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .expense-info { flex: 1; }
+  .expense-desc { font-size: 15px; font-weight: 600; }
+  .expense-meta { font-size: 12px; color: var(--gray); margin-top: 2px; }
+  .expense-amount { font-size: 17px; font-weight: 800; color: var(--dark); white-space: nowrap; }
+  .expense-payer-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .delete-btn {
+    background: none;
+    border: none;
+    color: #d1d5db;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+  }
+  .delete-btn:active { color: #ef4444; }
+
+  .settlement-card {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .settlement-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: #fff7ed;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    font-size: 15px;
+    border-left: 4px solid #f59e0b;
+  }
+  .settlement-item.done {
+    background: #f0fdf4;
+    border-color: #34d399;
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+  .settle-done-btn {
+    margin-left: auto;
+    background: #f59e0b;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .all-even {
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #16a34a;
+  }
+
+  .cat-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cat-item {
+    background: var(--gray-light);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .cat-item-name { color: var(--gray); font-size: 12px; }
+  .cat-item-val { font-weight: 700; font-size: 15px; margin-top: 2px; }
+
+  /* 夕食候補リスト */
+  .dinner-category {
+    margin-bottom: 18px;
+  }
+  .dinner-category-title {
+    font-size: 14px; font-weight: 800;
+    padding: 6px 12px; border-radius: 20px;
+    display: inline-block; margin-bottom: 10px;
+  }
+  .dinner-category.fish .dinner-category-title { background:#e0f2fe; color:#0369a1; }
+  .dinner-category.chicken .dinner-category-title { background:#fef9c3; color:#854d0e; }
+  .dinner-category.beef .dinner-category-title { background:#fce7f3; color:#9d174d; }
+  .dinner-category.pork .dinner-category-title { background:#f3e8ff; color:#6b21a8; }
+  .dinner-row {
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 10px 12px; border-radius: 10px;
+    background: var(--gray-light); margin-bottom: 6px;
+  }
+  .dinner-row-top { display: flex; align-items: center; justify-content: space-between; }
+  .dinner-name { font-weight: 700; font-size: 14px; }
+  .dinner-area {
+    font-size: 11px; color: var(--white);
+    background: var(--gray); padding: 2px 8px;
+    border-radius: 10px; white-space: nowrap;
+  }
+  .dinner-feat { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+  /* レスポンシブ */
+  @media (max-width: 360px) {
+    .header h1 { font-size: 20px; }
+    .flight-time { font-size: 16px; }
+  }
+
+  /* アニメーション */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section.active { animation: fadeIn 0.3s ease; }
+
+  /* ===== 同期バー ===== */
+  .sync-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--white); border-radius: 12px; padding: 10px 14px;
+    margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1.5px solid #e5e7eb;
+  }
+  .sync-status { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .sync-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .sync-dot.connected { background: #22c55e; box-shadow: 0 0 6px #22c55e88; animation: pulse 2s infinite; }
+  .sync-dot.disconnected { background: #d1d5db; }
+  .sync-dot.syncing { background: #f59e0b; animation: pulse 0.8s infinite; }
+  .sync-dot.error { background: #ef4444; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .sync-config-btn {
+    background: linear-gradient(135deg, #ec4899, #a855f7);
+    color: white; border: none; border-radius: 8px;
+    padding: 6px 12px; font-size: 12px; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+  }
+
+  /* ===== 同期モーダル ===== */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 9999; display: flex; align-items: flex-end; justify-content: center;
+  }
+  .modal-box {
+    background: white; border-radius: 24px 24px 0 0;
+    padding: 28px 20px 40px; width: 100%; max-width: 480px;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+  .modal-step {
+    background: var(--gray-light); border-radius: 12px;
+    padding: 14px; margin-bottom: 10px; font-size: 14px; line-height: 1.7;
+  }
+  .modal-step b { color: #ec4899; }
+  .modal-step code {
+    background: #1f2937; color: #f0abfc;
+    padding: 2px 6px; border-radius: 6px; font-size: 12px;
+  }
+  .modal-url-input {
+    width: 100%; border: 2px solid #e5e7eb; border-radius: 10px;
+    padding: 12px 14px; font-size: 14px; margin: 12px 0;
+    outline: none; transition: border-color .2s;
+  }
+  .modal-url-input:focus { border-color: #ec4899; }
+  .modal-connect-btn {
+    width: 100%; background: linear-gradient(135deg, #ec4899, #a855f7);
+    color: white; border: none; border-radius: 12px;
+    padding: 14px; font-size: 16px; font-weight: 800;
+    cursor: pointer; margin-bottom: 10px;
+  }
+  .modal-cancel-btn {
+    width: 100%; background: var(--gray-light); color: var(--gray);
+    border: none; border-radius: 12px; padding: 12px;
+    font-size: 14px; cursor: pointer;
+  }
+  .modal-disconnect-btn {
+    width: 100%; background: #fef2f2; color: #ef4444;
+    border: 1.5px solid #fecaca; border-radius: 12px; padding: 11px;
+    font-size: 14px; cursor: pointer; margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<div class="header">
+  <div class="header-flag">🇰🇷</div>
+  <h1>ソウル女子旅 2026</h1>
+  <p>4人でソウル完全制覇プラン</p>
+  <div class="header-dates">
+    <span class="header-date-badge">7月9日（木）</span>
+    <span class="header-date-badge">〜</span>
+    <span class="header-date-badge">7月11日（土）</span>
+  </div>
+</div>
+
+<!-- ナビ -->
+<nav class="nav">
+  <button class="nav-tab active" onclick="showSection('info')">✈ 基本情報</button>
+  <button class="nav-tab" onclick="showSection('day1')">1日目</button>
+  <button class="nav-tab" onclick="showSection('day2')">2日目</button>
+  <button class="nav-tab" onclick="showSection('day3')">3日目</button>
+  <button class="nav-tab" onclick="showSection('checklist')">✅ チェック</button>
+  <button class="nav-tab" onclick="showSection('budget')">💰 予算</button>
+  <button class="nav-tab" onclick="showSection('kakeibo')">📒 小遣い帳</button>
+</nav>
+
+<div class="container">
+
+  <!-- 基本情報 -->
+  <div class="section active" id="section-info">
+
+    <div class="card">
+      <div class="card-title">✈️ フライト情報</div>
+
+      <div class="flight-row outbound">
+        <span class="flight-badge out">往路</span>
+        <div class="flight-info">
+          <div class="flight-time">11:10</div>
+          <div class="flight-airport">成田T1 (NRT)</div>
+          <div class="flight-no">BX163 · A321 · エコノミー</div>
+        </div>
+        <div class="flight-arrow">→</div>
+        <div class="flight-info" style="text-align:right">
+          <div class="flight-time">13:55</div>
+          <div class="flight-airport">仁川T2 (ICN)</div>
+          <div class="flight-no">7月9日(木)</div>
+        </div>
+      </div>
+
+      <div class="flight-row inbound">
+        <span class="flight-badge in">復路</span>
+        <div class="flight-info">
+          <div class="flight-time">16:15</div>
+          <div class="flight-airport">仁川T2 (ICN)</div>
+          <div class="flight-no">BX166 · A321 · エコノミー</div>
+        </div>
+        <div class="flight-arrow">→</div>
+        <div class="flight-info" style="text-align:right">
+          <div class="flight-time">18:55</div>
+          <div class="flight-airport">成田T1 (NRT)</div>
+          <div class="flight-no">7月11日(土)</div>
+        </div>
+      </div>
+
+      <div class="tip-item" style="margin-top:8px">
+        ⚠️ 機内食なし。成田で軽食を済ませてから搭乗がおすすめ！
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏠 宿泊施設</div>
+      <div class="hotel-hero">
+        <div class="hotel-name">東橋洞の家</div>
+        <div class="hotel-sub">まるまる貸切マンション · 麻浦区東橋洞（弘大エリア）</div>
+        <div class="hotel-stars">🏠 ホスト：Han Youlさん　確認コード：HMCQHZBKQ4</div>
+      </div>
+      <div class="hotel-grid">
+        <div class="hotel-item">
+          <div class="hotel-item-label">タイプ</div>
+          <div class="hotel-item-value">貸切1棟・4名</div>
+        </div>
+        <div class="hotel-item">
+          <div class="hotel-item-label">ベッド</div>
+          <div class="hotel-item-value">🛏 10台</div>
+        </div>
+        <div class="hotel-item">
+          <div class="hotel-item-label">チェックイン</div>
+          <div class="hotel-item-value">15:00〜</div>
+        </div>
+        <div class="hotel-item">
+          <div class="hotel-item-label">チェックアウト</div>
+          <div class="hotel-item-value">〜11:00</div>
+        </div>
+        <div class="hotel-item">
+          <div class="hotel-item-label">2泊合計</div>
+          <div class="hotel-item-value">¥109,281</div>
+        </div>
+        <div class="hotel-item">
+          <div class="hotel-item-label">1人あたり</div>
+          <div class="hotel-item-value">¥27,320</div>
+        </div>
+      </div>
+      <div class="tip-item" style="margin-top:10px">
+        💜 弘大エリアの貸切マンション！4人でゆったり使えます。キャンセルは7月2日15:00まで無料。
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📍 アクセスメモ</div>
+      <div class="tip-item">🚆 空港→市内：AREX直通43分（仁川T2→ソウル駅）T2専用に乗ること！</div>
+      <div class="tip-item">🪙 T-moneyカード（約¥1,000）を空港で購入すると地下鉄・バス全て使える</div>
+      <div class="tip-item">💱 大使館前両替はホテルから徒歩5分・平日のみ営業なので初日に必ず！</div>
+    </div>
+
+  </div>
+
+  <!-- 1日目 -->
+  <div class="section" id="section-day1">
+    <div class="day-header day1">
+      <div class="day-number">01</div>
+      <div>
+        <div class="day-title">到着・両替・明洞コスメ・タッカンマリ</div>
+        <div class="day-date">2026年7月9日（木）</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot airport"></div>
+          <div class="timeline-time">09:30</div>
+          <div class="timeline-card move">
+            <div class="timeline-place">🛫 成田空港T1 集合</div>
+            <div class="timeline-desc">チェックイン・搭乗手続き。機内食なしなので空港内で軽食を！</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot airport"></div>
+          <div class="timeline-time">11:10</div>
+          <div class="timeline-card move">
+            <div class="timeline-place">✈️ BX163 出発</div>
+            <div class="timeline-desc">エアプサン / A321 / エコノミー</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot airport"></div>
+          <div class="timeline-time">13:55</div>
+          <div class="timeline-card move">
+            <div class="timeline-place">🛬 仁川T2 到着</div>
+            <div class="timeline-desc">入国審査・荷物受取。T-moneyカードを購入してAREx乗車。直通43分でソウル駅へ。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot special"></div>
+          <div class="timeline-time">15:30</div>
+          <div class="timeline-card hotel">
+            <div class="timeline-place">🏠 東橋洞の家 チェックイン</div>
+            <div class="timeline-desc">弘大エリアの貸切マンションへ。荷物を置いて身軽になろう！</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">16:00〜16:45</div>
+          <div class="timeline-card money">
+            <div class="timeline-place">💱 大使館前両替（光化門）</div>
+            <div class="timeline-desc">ソウル随一のレートが良い両替所。4人分まとめて両替がおすすめ！宿→地下鉄で約15分。</div>
+            <span class="timeline-badge badge-reserve">⚠️ 平日のみ・初日必須！</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">17:00〜17:40</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">🛍 オリーブヤング 明洞中央店</div>
+            <div class="timeline-desc">シートマスク・BBクリーム・スキンケアをまとめ買い！アプリ会員登録でポイント◎</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">17:40〜18:10</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">😷 ザ マスクショップ</div>
+            <div class="timeline-desc">友達に教えてもらった激安コスメショップ。パックやコスメをお得にゲット！</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">18:10〜18:45</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">🌸 hetras Myeongdong（フレグランス）</div>
+            <div class="timeline-desc">韓国でバズっているフレグランス店。ディフューザー3個セット₩25,800。ハンドクリームはお土産にも。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">18:45〜19:20</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">🛍 ロッテ免税店 明洞本店</div>
+            <div class="timeline-desc">9〜12Fが免税フロア。Le Mouton（ルムトン）スニーカーなど話題ブランドが集まる。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot special"></div>
+          <div class="timeline-time">19:30〜21:00</div>
+          <div class="timeline-card food">
+            <div class="timeline-place">🍗 陳玉華ハルメ元祖タッカンマリ</div>
+            <div class="timeline-desc">ソウル初夜は鉄板の鶏鍋！コラーゲンたっぷりスープが美味。〆はカルグクスで。</div>
+            <span class="timeline-badge badge-highlight">🔥 ソウル名物・初日に食べたい一品</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot special"></div>
+          <div class="timeline-time">21:30</div>
+          <div class="timeline-card hotel">
+            <div class="timeline-place">🏠 宿に帰着・まったりタイム</div>
+            <div class="timeline-desc">初日の疲れをゆっくり癒そう。シャワーでさっぱり🚿</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 2日目 -->
+  <div class="section" id="section-day2">
+    <div class="day-header day2">
+      <div class="day-number">02</div>
+      <div>
+        <div class="day-title">ベーグル・広蔵市場・美術館・江南・深夜韓牛</div>
+        <div class="day-date">2026年7月10日（金）</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot special"></div>
+          <div class="timeline-time">07:45</div>
+          <div class="timeline-card food">
+            <div class="timeline-place">🥯 ロンドンベーグルミュージアム（安国店）</div>
+            <div class="timeline-desc">モチモチ食感のベーグルが大人気！超激混みのため早朝到着が鍵。安国駅すぐ。</div>
+            <span class="timeline-badge badge-tip">💡 7:45着が目標・並び必至</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">09:30〜10:30</div>
+          <div class="timeline-card fun">
+            <div class="timeline-place">🏯 安国エリア散策（北村・昌徳宮周辺）</div>
+            <div class="timeline-desc">ベーグルを食べながら北村韓屋村を散策。朝の静かな路地が美しい。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">11:00〜11:50</div>
+          <div class="timeline-card fun">
+            <div class="timeline-place">🏮 広蔵市場 散策</div>
+            <div class="timeline-desc">100年の歴史ある伝統市場。ビビンバ・チヂミ・キンパなどの屋台をひやかしながら。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">12:00〜12:45</div>
+          <div class="timeline-card food">
+            <div class="timeline-place">🍜 コヒャンソンカルグクス（広蔵市場内）</div>
+            <div class="timeline-desc">市場の中にある手打ち麺の名店。₩1〜10,000のコスパ最強ランチ！肉なし麺で胃を休める。</div>
+            <span class="timeline-badge badge-highlight">💚 肉休め・コスパ最強</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">12:45〜13:20</div>
+          <div class="timeline-card food">
+            <div class="timeline-place">🍡 広蔵市場チャプサルクァベギ</div>
+            <div class="timeline-desc">もちもちの韓国揚げドーナツ。市場散策のおやつに最適！安くてクセになる味。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">14:00〜15:30</div>
+          <div class="timeline-card fun">
+            <div class="timeline-place">🎨 リウム美術館（漢南洞）</div>
+            <div class="timeline-desc">サムスン財団の世界レベル美術館。韓国伝統美術から現代アートまで。建物自体も美しい。</div>
+            <span class="timeline-badge badge-reserve">🔴 月曜定休・要予約確認</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">16:00〜16:45</div>
+          <div class="timeline-card fun">
+            <div class="timeline-place">📚 ビョルマダン図書館（COEXモール）</div>
+            <div class="timeline-desc">天井まで本が並ぶインスタ映え間違いなしの図書館！COEXモール地下にある。江南駅圏内。</div>
+            <span class="timeline-badge badge-highlight">✨ 写真スポット・入場無料</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">17:00〜17:30</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">👜 Pleats Mama</div>
+            <div class="timeline-desc">100%リサイクル素材の伸縮バッグ。パソコンも入るビッグボウバッグ₩129,000〜。日本未上陸ブランド。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">17:30〜18:00</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">👘 Juuneedu Showroom</div>
+            <div class="timeline-desc">インスタで話題のパジャマブランド。約3,000円でおそろいパジャマをゲット！</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">18:00〜18:40</div>
+          <div class="timeline-card food">
+            <div class="timeline-place">🍦 YO YOGURT</div>
+            <div class="timeline-desc">アイスクリーム・はちみつ・チーズ・チョコクランチ・ベリー・マンゴーが選べるヨーグルトデザート。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot special"></div>
+          <div class="timeline-time">19:00〜21:00</div>
+          <div class="timeline-card food">
+            <div class="timeline-place">🐙 熱情島チュクミ（龍山）</div>
+            <div class="timeline-desc">ピリ辛のタコ炒め専門店。龍山エリアにあり、漢江・清潭洞への流れにぴったり。鶏→魚介→牛のバランス◎</div>
+            <span class="timeline-badge badge-highlight">🐙 魚介で肉休め・龍山から漢江へ</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">21:30〜22:30</div>
+          <div class="timeline-card fun">
+            <div class="timeline-place">🌊 漢江公園（インスタントラーメン）</div>
+            <div class="timeline-desc">コンビニでカップ麺を買って川沿いでピクニック！韓国らしい夜の過ごし方。夜景も最高。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot special"></div>
+          <div class="timeline-time">23:30〜</div>
+          <div class="timeline-card food">
+            <div class="timeline-place">🥩 ヨンチョンヨンファ（韓牛・清潭洞）</div>
+            <div class="timeline-desc">芸能人も通う韓牛レストラン。ユッケビビンバが絶品！24時間営業なので深夜でもOK。</div>
+            <span class="timeline-badge badge-highlight">✨ 24h営業・女子旅のハイライト</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 3日目 -->
+  <div class="section" id="section-day3">
+    <div class="day-header day3">
+      <div class="day-number">03</div>
+      <div>
+        <div class="day-title">明洞〆グルメ・フレグランス・帰国</div>
+        <div class="day-date">2026年7月11日（土）</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot special"></div>
+          <div class="timeline-time">10:00</div>
+          <div class="timeline-card hotel">
+            <div class="timeline-place">🏠 東橋洞の家 チェックアウト・荷物預け</div>
+            <div class="timeline-desc">荷物はホストに預けて身軽に明洞へ。帰りに取りに戻るのでカギの返却方法を確認。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot special"></div>
+          <div class="timeline-time">10:30〜11:20</div>
+          <div class="timeline-card food">
+            <div class="timeline-place">🥣 神仙ソルロンタン 明洞店</div>
+            <div class="timeline-desc">白濁した牛骨スープのあっさり朝食。熟成キムチが絶品！持ち帰りキムチも購入可能。</div>
+            <span class="timeline-badge badge-highlight">💛 深夜韓牛の翌朝はあっさりスープで</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">11:20〜11:50</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">🌸 Hetras（香水専門店）</div>
+            <div class="timeline-desc">韓国発ラグジュアリーフレグランス。ディフューザー・ボディウォッシュをお土産に。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot special"></div>
+          <div class="timeline-time">11:50〜12:30</div>
+          <div class="timeline-card food">
+            <div class="timeline-place">🍗 BHCチキン 明洞本店（プリンクル）</div>
+            <div class="timeline-desc">最後のご飯はソウル名物チキン！「魔法の粉」がたっぷりのプリンクルで〆。</div>
+            <span class="timeline-badge badge-highlight">🍗 ソウル最後の〆チキン！</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">12:30〜12:45</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">💄 明洞 ラストショッピング</div>
+            <div class="timeline-desc">オリーブヤングで買い忘れたコスメ・お土産を最終チェック！</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot special"></div>
+          <div class="timeline-time">13:10〜13:25</div>
+          <div class="timeline-card hotel">
+            <div class="timeline-place">🏠 東橋洞の家に戻って荷物ピックアップ</div>
+            <div class="timeline-desc">明洞→弘大は地下鉄約20分。スーツケースを受け取ったらそのまま홍대입구駅へ！</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot airport"></div>
+          <div class="timeline-time">13:30</div>
+          <div class="timeline-card move">
+            <div class="timeline-place">🚆 홍대입구駅 → AREX 直通で仁川T2へ</div>
+            <div class="timeline-desc">弘大入口駅はAREx停車駅！ソウル駅に寄らずそのまま直通45分でT2へ行ける。</div>
+            <span class="timeline-badge badge-reserve">⚠️ 직통（直通）に乗ること・일반は時間かかる</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot airport"></div>
+          <div class="timeline-time">14:15</div>
+          <div class="timeline-card move">
+            <div class="timeline-place">🛬 仁川T2 到着・搭乗手続き</div>
+            <div class="timeline-desc">搭乗手続き・荷物預け。余裕を持って！</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">14:30〜15:50</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">🧴 空港免税店</div>
+            <div class="timeline-desc">ロッテ・新羅免税店でコスメ・お菓子・海苔をラスト購入！T-moneyカードの払い戻しも忘れずに。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot airport"></div>
+          <div class="timeline-time">16:15</div>
+          <div class="timeline-card move">
+            <div class="timeline-place">✈️ BX166 出発</div>
+            <div class="timeline-desc">仁川T2 → 成田T1 / 18:55着。ありがとう、ソウル！また来るね🇰🇷</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- チェックリスト -->
+  <div class="section" id="section-checklist">
+
+    <div class="card">
+      <div class="card-title">✅ スポット制覇チェックリスト</div>
+      <div class="check-count" id="check-count">0 / 15 完了</div>
+      <div class="check-progress">
+        <div class="check-progress-bar" id="progress-bar" style="width:0%"></div>
+      </div>
+      <div id="checklist">
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">💱</div>
+          <div>
+            <div class="check-name">大使館前両替</div>
+            <div class="check-time">1日目 15:55 · 光化門</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🛍</div>
+          <div>
+            <div class="check-name">オリーブヤング 明洞中央店</div>
+            <div class="check-time">1日目 16:30 · 明洞</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍲</div>
+          <div>
+            <div class="check-name">陳玉華ハルメ元祖タッカンマリ</div>
+            <div class="check-time">1日目 18:30 · 鍾路5街</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍩</div>
+          <div>
+            <div class="check-name">広蔵市場 チャプサルクァベギ</div>
+            <div class="check-time">1日目 20:30 · 広蔵市場</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🥯</div>
+          <div>
+            <div class="check-name">ロンドンベーグルミュージアム 安国</div>
+            <div class="check-time">2日目 07:45 · 安国</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🏘</div>
+          <div>
+            <div class="check-name">北村韓屋村</div>
+            <div class="check-time">2日目 09:15 · 安国</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🐙</div>
+          <div>
+            <div class="check-name">熱情島チュクミ（龍山）</div>
+            <div class="check-time">2日目 19:00 · 龍山</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🌊</div>
+          <div>
+            <div class="check-name">漢江公園（インスタントラーメン）</div>
+            <div class="check-time">2日目 13:30 · バンポ地区</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🧥</div>
+          <div>
+            <div class="check-name">Juuneedu（パジャマ）</div>
+            <div class="check-time">2日目 16:00 · 弘大</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍦</div>
+          <div>
+            <div class="check-name">YO YOGURT</div>
+            <div class="check-time">2日目 17:00 · 弘大</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍽</div>
+          <div>
+            <div class="check-name">ヨンチョンヨンファ</div>
+            <div class="check-time">2日目 23:30〜 · 清潭洞 · 24h営業</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍜</div>
+          <div>
+            <div class="check-name">コヒャンソンカルグクス</div>
+            <div class="check-time">3日目 08:30 · 広蔵市場内</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🏪</div>
+          <div>
+            <div class="check-name">広蔵市場 散策</div>
+            <div class="check-time">3日目 09:45 · 広蔵市場</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍽</div>
+          <div>
+            <div class="check-name">イルミチプ</div>
+            <div class="check-time">3日目 11:00 · 東大門周辺</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍗</div>
+          <div>
+            <div class="check-name">BHCチキン 明洞本店</div>
+            <div class="check-time">3日目 12:00 · 明洞</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔴 事前予約リスト</div>
+      <div class="reserve-item urgent">
+        <div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+            <span class="reserve-priority priority-must">必須</span>
+            <div class="reserve-name">🍽 ヨンチョンヨンファ</div>
+          </div>
+          <div class="reserve-reason">人気の贅沢レストラン。席の確保が必須。</div>
+          <div class="reserve-how">→ 公式サイトまたはNaver予約</div>
+        </div>
+      </div>
+      <div class="reserve-item recommend">
+        <div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+            <span class="reserve-priority priority-good">推奨</span>
+            <div class="reserve-name">🥯 ロンドンベーグルミュージアム</div>
+          </div>
+          <div class="reserve-reason">行列対策で07:45到着を目標に。</div>
+          <div class="reserve-how">→ 並ぶのみ（予約不可）</div>
+        </div>
+      </div>
+      <div class="reserve-item recommend">
+        <div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+            <span class="reserve-priority priority-good">推奨</span>
+            <div class="reserve-name">🏠 東橋洞の家（弘大）</div>
+          </div>
+          <div class="reserve-reason">✅ 予約済み（確認コード：HMCQHZBKQ4）</div>
+          <div class="reserve-how">→ AMEX ....1006 で決済済み ¥109,281</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 予算 -->
+  <div class="section" id="section-budget">
+
+    <div class="budget-total">
+      <div class="budget-total-label">旅行費用の目安（1人あたり）</div>
+      <div class="budget-total-amount">¥93,000〜</div>
+      <div class="budget-total-sub">4名合計 約¥372,000〜</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💰 内訳（1人あたり）</div>
+      <div class="budget-row">
+        <div class="budget-label">✈️ 航空券（往復）</div>
+        <div>
+          <div class="budget-amount">¥28,658</div>
+          <div class="budget-note">Air Busan BX163/166</div>
+        </div>
+      </div>
+      <div class="budget-row">
+        <div class="budget-label">🏯 ホテル（2泊）</div>
+        <div>
+          <div class="budget-amount">¥27,320</div>
+          <div class="budget-note">東橋洞の家（弘大）/ 4名で割り勘</div>
+        </div>
+      </div>
+      <div class="budget-row">
+        <div class="budget-label">🚇 交通費</div>
+        <div>
+          <div class="budget-amount">¥3,000</div>
+          <div class="budget-note">AREX・地下鉄・T-money</div>
+        </div>
+      </div>
+      <div class="budget-row">
+        <div class="budget-label">🍽 食費</div>
+        <div>
+          <div class="budget-amount">¥15,000〜18,000</div>
+          <div class="budget-note">タッカンマリ・カニ・チキンetc.</div>
+        </div>
+      </div>
+      <div class="budget-row">
+        <div class="budget-label">🛍 ショッピング</div>
+        <div>
+          <div class="budget-amount">¥20,000〜</div>
+          <div class="budget-note">コスメ・パジャマ・お土産</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💡 お役立ちメモ</div>
+      <div class="tip-item">💱 両替は大使館前両替所（光化門）が高レート。4人分まとめると◎</div>
+      <div class="tip-item">🪙 T-moneyカード（空港で購入）で地下鉄・バスが全て使える。残高は帰りに払い戻し可能</div>
+      <div class="tip-item">🛍 オリーブヤングはまとめ買いでポイントがたまりやすい。アプリ会員登録推奨</div>
+      <div class="tip-item">🍜 漢江ラーメンはマイ箸・ウェットティッシュ・ゴミ袋を持参すると便利</div>
+      <div class="tip-item">🧳 帰りはスーツケースが膨らむので、折りたたみエコバッグを持参するとGOOD</div>
+      <div class="tip-item">📱 NaverマップはGoogleマップより韓国での精度が高いのでおすすめ</div>
+    </div>
+
+    <!-- 夕食候補リスト -->
+    <div class="card">
+      <div class="card-title">🍽️ 夕食候補リスト（全15店）</div>
+
+      <!-- 魚介・海鮮系 -->
+      <div class="dinner-category fish">
+        <div class="dinner-category-title">🐟 魚介・海鮮系</div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">ウンソンフェッチッ（은성횟집）</div>
+            <div class="dinner-area">要確認</div>
+          </div>
+          <div class="dinner-feat">タラ鍋のみ。ピリ辛スープがくせになる魚鍋</div>
+        </div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">舞月食卓（ムウォルシクタク）</div>
+            <div class="dinner-area">江南</div>
+          </div>
+          <div class="dinner-feat">カンジャンセウ丼（醤油漬けエビ）₩13,800。おしゃれ家庭料理</div>
+        </div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">海南ナッチ（헤남낙지）</div>
+            <div class="dinner-area">東大門</div>
+          </div>
+          <div class="dinner-feat">生タコのビジュ映えスープ。ナッチホルキギ₩22,000/人</div>
+        </div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">平和延南（ピョンファヨンナム）</div>
+            <div class="dinner-area">延南洞</div>
+          </div>
+          <div class="dinner-feat">ナッコプセ（タコ＋ホルモン＋エビ）釜山名物。〆ポクンバブ必須。宿から近い！</div>
+        </div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">熱情島チュクミ（열정도낙지）</div>
+            <div class="dinner-area">龍山</div>
+          </div>
+          <div class="dinner-feat">イイダコ外網焼き＋チーズケランチム付き。₩51,000/2人</div>
+        </div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">東海ヘムルタン 東大門直営店</div>
+            <div class="dinner-area">東大門</div>
+          </div>
+          <div class="dinner-feat">東大門駅徒歩3分。海鮮ぎっしりの本格ヘムルタンが人気</div>
+        </div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">ジョガビ 明洞店</div>
+            <div class="dinner-area">明洞</div>
+          </div>
+          <div class="dinner-feat">乙支路入口駅から徒歩圏。貝焼き盛り合わせ・海鮮鍋が強く夜遅くまで営業</div>
+        </div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">ハムチョ・カンジャンケジャン</div>
+            <div class="dinner-area">明洞</div>
+          </div>
+          <div class="dinner-feat">海鮮鍋がメイン。カンジャンケジャンも一緒に楽しめる明洞の人気店</div>
+        </div>
+
+      </div>
+
+      <!-- 鶏肉系 -->
+      <div class="dinner-category chicken">
+        <div class="dinner-category-title">🍗 鶏肉系</div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">陳玉華ハルメ元祖タッカンマリ</div>
+            <div class="dinner-area">鍾路</div>
+          </div>
+          <div class="dinner-feat">鶏鍋の元祖。コラーゲンスープで〆はカルグクス</div>
+        </div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">BHCチキン 明洞本店</div>
+            <div class="dinner-area">明洞</div>
+          </div>
+          <div class="dinner-feat">プリンクル（뿌링클）フライドチキン。魔法の粉がたっぷり</div>
+        </div>
+      </div>
+
+      <!-- 牛肉系 -->
+      <div class="dinner-category beef">
+        <div class="dinner-category-title">🥩 牛肉系</div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">ヨンチョンヨンファ（영천영화）</div>
+            <div class="dinner-area">清潭洞</div>
+          </div>
+          <div class="dinner-feat">韓牛・ユッケビビンバ。芸能人御用達・24h営業</div>
+        </div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">神仙ソルロンタン 明洞店</div>
+            <div class="dinner-area">明洞</div>
+          </div>
+          <div class="dinner-feat">牛骨スープあっさり。熟成キムチ付き・持ち帰り可</div>
+        </div>
+      </div>
+
+      <!-- 豚肉系 -->
+      <div class="dinner-category pork">
+        <div class="dinner-category-title">🐷 豚肉系</div>
+
+        <div class="dinner-row">
+          <div class="dinner-row-top">
+            <div class="dinner-name">イルミチプ（일미집）</div>
+            <div class="dinner-area">要確認</div>
+          </div>
+          <div class="dinner-feat">カムジャタン（豚背骨鍋）創業50年の老舗。ほろほろ肉が絶品</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 小遣い帳 -->
+  <div class="section" id="section-kakeibo">
+
+    <!-- 同期バー -->
+    <div class="sync-bar">
+      <div class="sync-status">
+        <div class="sync-dot disconnected" id="sync-dot"></div>
+        <span id="sync-status-text">ローカル保存中</span>
+      </div>
+      <button class="sync-config-btn" onclick="openSyncModal()">🔗 同期設定</button>
+    </div>
+
+    <!-- 合計ヒーロー -->
+    <div class="kakeibo-hero">
+      <div class="kakeibo-hero-label">💴 4人の合計支出</div>
+      <div class="kakeibo-hero-total" id="kk-total">¥0</div>
+      <div class="kakeibo-hero-sub" id="kk-per-person">1人あたり ¥0</div>
+    </div>
+
+    <!-- メンバーカード -->
+    <div class="member-grid" id="member-grid"></div>
+
+    <!-- 支出追加フォーム -->
+    <div class="add-expense-form">
+      <div class="card-title">➕ 支出を追加</div>
+      <div class="form-row">
+        <label class="form-label">💬 内容</label>
+        <input class="form-input" id="kk-desc" placeholder="例：タッカンマリ代" type="text">
+      </div>
+      <div class="form-row-half">
+        <div>
+          <label class="form-label">💴 金額</label>
+          <input class="form-input" id="kk-amount" placeholder="0" type="number" inputmode="numeric">
+        </div>
+        <div>
+          <label class="form-label">通貨</label>
+          <select class="form-select" id="kk-currency">
+            <option value="JPY">円（¥）</option>
+            <option value="KRW">ウォン（₩）</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row-half">
+        <div>
+          <label class="form-label">👤 支払った人</label>
+          <select class="form-select" id="kk-payer">
+            <option value="岡安">岡安</option>
+            <option value="奥津">奥津</option>
+            <option value="李">李</option>
+            <option value="齋藤">齋藤</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">📅 日程</label>
+          <select class="form-select" id="kk-day">
+            <option value="事前">事前</option>
+            <option value="1日目">1日目</option>
+            <option value="2日目">2日目</option>
+            <option value="3日目">3日目</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">🏷 カテゴリ</label>
+        <select class="form-select" id="kk-cat">
+          <option value="✈️ 交通">✈️ 交通</option>
+          <option value="🍽 食事">🍽 食事</option>
+          <option value="🛍 ショッピング">🛍 ショッピング</option>
+          <option value="🏨 宿泊">🏨 宿泊</option>
+          <option value="🎡 観光">🎡 観光</option>
+          <option value="💄 美容">💄 美容</option>
+          <option value="🪙 両替">🪙 両替</option>
+          <option value="📦 その他">📦 その他</option>
+        </select>
+      </div>
+      <button class="add-btn" onclick="addExpense()">追加する</button>
+    </div>
+
+    <!-- 支出リスト -->
+    <div class="card">
+      <div class="card-title">📋 支出一覧</div>
+      <div class="expense-list" id="expense-list"></div>
+    </div>
+
+    <!-- カテゴリ別 -->
+    <div class="card">
+      <div class="card-title">📊 カテゴリ別合計</div>
+      <div class="cat-breakdown" id="cat-breakdown"></div>
+    </div>
+
+    <!-- 精算 -->
+    <div class="settlement-card">
+      <div class="card-title">🤝 精算（割り勘）</div>
+      <div id="settlement-list"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- 同期設定モーダル -->
+<div id="sync-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeSyncModal()">
+  <div class="modal-box">
+    <div class="modal-title">🔗 リアルタイム同期設定</div>
+    <p style="font-size:14px;color:#6b7280;margin-bottom:16px">データはすでに準備済みです！下のURLをそのまま貼り付けて接続してください。</p>
+
+    <div class="modal-step" style="background:#fdf2f8;border:1.5px solid #fbcfe8">
+      🔗 共有URL（全員同じURLを使ってください）<br>
+      <code style="font-size:11px;word-break:break-all;color:#ec4899">https://jsonblob.com/api/jsonBlob/019deaec-b479-74d2-ace8-3a3ad2f029ee</code>
+    </div>
+    <div class="modal-step">
+      <b>Step 1</b>　上のURLをコピーして下に貼り付ける
+    </div>
+    <div class="modal-step">
+      <b>Step 2</b>　「接続して同期を開始」を押す
+    </div>
+    <div class="modal-step">
+      <b>Step 3</b>　このURLをLINEで友達3人にも送って同じ設定をしてもらう
+    </div>
+
+    <input class="modal-url-input" id="fb-url-input" type="url"
+      placeholder="https://jsonblob.com/api/jsonBlob/xxxxxxxx">
+    <button class="modal-connect-btn" onclick="connectFirebase()">接続して同期を開始 🚀</button>
+    <button class="modal-cancel-btn" onclick="closeSyncModal()">キャンセル</button>
+    <button class="modal-disconnect-btn" id="disconnect-btn" onclick="disconnectFirebase()" style="display:none">接続を解除してローカル保存に戻す</button>
+  </div>
+</div>
+
+<script>
+  /* ===== ナビ ===== */
+  function showSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('section-' + name).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (name === 'kakeibo') renderKakeibo();
+  }
+
+  /* ===== チェックリスト ===== */
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+    updateProgress();
+  }
+  function updateProgress() {
+    const items = document.querySelectorAll('.checklist-item');
+    const checked = document.querySelectorAll('.checklist-item.checked').length;
+    const total = items.length;
+    document.getElementById('progress-bar').style.width = Math.round((checked/total)*100) + '%';
+    document.getElementById('check-count').textContent = checked + ' / ' + total + ' 完了';
+  }
+  updateProgress();
+
+  /* ===== 小遣い帳 ===== */
+  const MEMBERS = ['岡安','奥津','李','齋藤'];
+  const MEMBER_COLORS = ['#ec4899','#a855f7','#3b82f6','#f59e0b'];
+  const KRW_RATE = 0.11; // ₩1 ≈ ¥0.11（概算）
+
+  // 初期データ：齋藤の航空券代
+  let expenses = JSON.parse(localStorage.getItem('seoul_expenses') || 'null');
+  if (!expenses) {
+    expenses = [
+      {
+        id: 1700000000000,
+        payer: '齋藤', amount: 131452, currency: 'JPY', amountJPY: 131452,
+        category: '✈️ 交通', desc: '航空券代4名分（BX163/166）', day: '事前', settled: false
+      },
+      {
+        id: 1700000000001,
+        payer: '齋藤', amount: 109281, currency: 'JPY', amountJPY: 109281,
+        category: '🏨 宿泊', desc: '宿泊費（東橋洞の家 2泊）', day: '事前', settled: false
+      }
+    ];
+    localStorage.setItem('seoul_expenses', JSON.stringify(expenses));
+  }
+
+  /* ===== Firebase 同期 ===== */
+  let FIREBASE_URL = localStorage.getItem('seoul_fb_url') || '';
+  let syncTimer = null;
+  let lastHash = '';
+  let isSyncing = false;
+
+  function setSyncUI(state, text) {
+    const dot = document.getElementById('sync-dot');
+    const txt = document.getElementById('sync-status-text');
+    if (!dot || !txt) return;
+    dot.className = 'sync-dot ' + state;
+    txt.textContent = text;
+  }
+
+  async function pushToSync() {
+    if (!FIREBASE_URL) return;
+    isSyncing = true;
+    setSyncUI('syncing', '同期中…');
+    try {
+      const res = await fetch(FIREBASE_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(expenses)
+      });
+      if (!res.ok) throw new Error(res.status);
+      const now = new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
+      setSyncUI('connected', '✓ 同期済み ' + now);
+    } catch(e) {
+      setSyncUI('error', '⚠ 送信失敗');
+    }
+    isSyncing = false;
+  }
+
+  async function pullFromSync() {
+    if (!FIREBASE_URL || isSyncing) return;
+    try {
+      const res = await fetch(FIREBASE_URL);
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      if (data && Array.isArray(data)) {
+        const hash = JSON.stringify(data);
+        if (hash !== lastHash) {
+          lastHash = hash;
+          expenses = data;
+          localStorage.setItem('seoul_expenses', JSON.stringify(expenses));
+          renderKakeibo();
+        }
+      }
+      const now = new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
+      setSyncUI('connected', '● 同期中 ' + now);
+    } catch(e) {
+      setSyncUI('error', '⚠ 接続エラー');
+    }
+  }
+
+  function startSync() {
+    if (syncTimer) clearInterval(syncTimer);
+    if (!FIREBASE_URL) { setSyncUI('disconnected','ローカル保存中'); return; }
+    pullFromSync();
+    syncTimer = setInterval(pullFromSync, 8000); // 8秒ごとに自動更新
+  }
+
+  function saveExpenses() {
+    localStorage.setItem('seoul_expenses', JSON.stringify(expenses));
+    pushToSync();
+  }
+
+  /* ===== モーダル操作 ===== */
+  function openSyncModal() {
+    document.getElementById('sync-modal').style.display = 'flex';
+    document.getElementById('fb-url-input').value = FIREBASE_URL;
+    document.getElementById('disconnect-btn').style.display = FIREBASE_URL ? 'block' : 'none';
+  }
+  function closeSyncModal() {
+    document.getElementById('sync-modal').style.display = 'none';
+  }
+  function connectFirebase() {
+    const url = document.getElementById('fb-url-input').value.trim().replace(/\/$/, '');
+    if (!url || !url.startsWith('https://')) {
+      alert('URLを入力してください（https://jsonblob.com/api/jsonBlob/... の形式）');
+      return;
+    }
+    FIREBASE_URL = url;
+    localStorage.setItem('seoul_fb_url', FIREBASE_URL);
+    closeSyncModal();
+    pushToSync().then(() => startSync());
+    alert('✅ 接続しました！\n\nこのURLをLINEで友達3人に送って、同じ設定をしてもらえば全員でリアルタイム共有できます！\n\n' + url);
+  }
+  function disconnectFirebase() {
+    if (!confirm('同期を解除してローカル保存に戻しますか？')) return;
+    FIREBASE_URL = '';
+    localStorage.removeItem('seoul_fb_url');
+    if (syncTimer) { clearInterval(syncTimer); syncTimer = null; }
+    setSyncUI('disconnected', 'ローカル保存中');
+    closeSyncModal();
+  }
+
+  // 起動時に同期開始
+  startSync();
+
+  function toJPY(amount, currency) {
+    return currency === 'KRW' ? Math.round(amount * KRW_RATE) : amount;
+  }
+
+  function addExpense() {
+    const desc    = document.getElementById('kk-desc').value.trim();
+    const amount  = parseFloat(document.getElementById('kk-amount').value);
+    const currency= document.getElementById('kk-currency').value;
+    const payer   = document.getElementById('kk-payer').value;
+    const day     = document.getElementById('kk-day').value;
+    const cat     = document.getElementById('kk-cat').value;
+    if (!desc || !amount || amount <= 0) {
+      alert('内容と金額を入力してください');
+      return;
+    }
+    expenses.push({
+      id: Date.now(),
+      payer, amount, currency,
+      amountJPY: toJPY(amount, currency),
+      category: cat, desc, day, settled: false
+    });
+    saveExpenses();
+    document.getElementById('kk-desc').value = '';
+    document.getElementById('kk-amount').value = '';
+    renderKakeibo();
+  }
+
+  function deleteExpense(id) {
+    if (!confirm('この支出を削除しますか？')) return;
+    expenses = expenses.filter(e => e.id !== id);
+    saveExpenses();
+    renderKakeibo();
+  }
+
+  function renderKakeibo() {
+    const totalJPY = expenses.reduce((s, e) => s + e.amountJPY, 0);
+    const perPerson = Math.round(totalJPY / 4);
+
+    // ヒーロー
+    document.getElementById('kk-total').textContent = '¥' + totalJPY.toLocaleString();
+    document.getElementById('kk-per-person').textContent = '1人あたり ¥' + perPerson.toLocaleString();
+
+    // メンバーカード
+    const paid = {};
+    MEMBERS.forEach(m => paid[m] = 0);
+    expenses.forEach(e => { paid[e.payer] += e.amountJPY; });
+
+    const grid = document.getElementById('member-grid');
+    grid.innerHTML = MEMBERS.map((m, i) => {
+      const balance = paid[m] - perPerson;
+      const balClass = balance > 0 ? 'balance-plus' : balance < 0 ? 'balance-minus' : 'balance-zero';
+      const balText  = balance > 0 ? `+¥${balance.toLocaleString()} 受取` :
+                       balance < 0 ? `-¥${Math.abs(balance).toLocaleString()} 支払` : '±0 ちょうど';
+      return `
+        <div class="member-card m${i}">
+          <div class="member-name">${m}</div>
+          <div class="member-paid-label">支払済み</div>
+          <div class="member-paid">¥${paid[m].toLocaleString()}</div>
+          <div class="member-balance ${balClass}">${balText}</div>
+        </div>`;
+    }).join('');
+
+    // 支出一覧
+    const list = document.getElementById('expense-list');
+    if (expenses.length === 0) {
+      list.innerHTML = '<div style="text-align:center;color:#9ca3af;padding:20px">まだ支出がありません</div>';
+    } else {
+      list.innerHTML = [...expenses].reverse().map(e => {
+        const mi = MEMBERS.indexOf(e.payer);
+        const col = MEMBER_COLORS[mi] || '#6b7280';
+        const amtStr = e.currency === 'KRW'
+          ? `₩${e.amount.toLocaleString()} (¥${e.amountJPY.toLocaleString()})`
+          : `¥${e.amountJPY.toLocaleString()}`;
+        const catIcon = e.category.split(' ')[0];
+        return `
+          <div class="expense-item">
+            <div class="expense-cat-icon" style="background:${col}22">${catIcon}</div>
+            <div class="expense-info">
+              <div class="expense-desc">${e.desc}</div>
+              <div class="expense-meta">
+                <span class="expense-payer-badge" style="background:${col}22;color:${col}">${e.payer}</span>
+                　${e.day}　${e.category.split(' ').slice(1).join(' ')}
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="expense-amount">${amtStr}</div>
+            </div>
+            <button class="delete-btn" onclick="deleteExpense(${e.id})">✕</button>
+          </div>`;
+      }).join('');
+    }
+
+    // カテゴリ別
+    const catTotals = {};
+    expenses.forEach(e => {
+      catTotals[e.category] = (catTotals[e.category] || 0) + e.amountJPY;
+    });
+    const catEl = document.getElementById('cat-breakdown');
+    catEl.innerHTML = Object.entries(catTotals)
+      .sort((a,b) => b[1]-a[1])
+      .map(([cat, amt]) => `
+        <div class="cat-item">
+          <div class="cat-item-name">${cat}</div>
+          <div class="cat-item-val">¥${amt.toLocaleString()}</div>
+        </div>`).join('') || '<div style="color:#9ca3af;font-size:14px">まだデータなし</div>';
+
+    // 精算計算
+    const balance = {};
+    MEMBERS.forEach(m => balance[m] = paid[m] - perPerson);
+    const settlements = calcSettlements(balance);
+    const settlEl = document.getElementById('settlement-list');
+    if (settlements.length === 0) {
+      settlEl.innerHTML = '<div class="all-even">🎉 全員ちょうど！精算不要です</div>';
+    } else {
+      settlEl.innerHTML = settlements.map((s, i) => `
+        <div class="settlement-item" id="settle-${i}">
+          <span>💸</span>
+          <span><b>${s.from}</b> → <b>${s.to}</b> に <b>¥${s.amount.toLocaleString()}</b> 支払う</span>
+          <button class="settle-done-btn" onclick="markSettled(${i})">済✓</button>
+        </div>`).join('');
+    }
+  }
+
+  function calcSettlements(balance) {
+    const debtors  = MEMBERS.filter(m => balance[m] < -1).map(m => ({name:m, amt: -balance[m]}));
+    const creditors= MEMBERS.filter(m => balance[m] >  1).map(m => ({name:m, amt:  balance[m]}));
+    const result = [];
+    let di = 0, ci = 0;
+    while (di < debtors.length && ci < creditors.length) {
+      const pay = Math.min(debtors[di].amt, creditors[ci].amt);
+      result.push({ from: debtors[di].name, to: creditors[ci].name, amount: Math.round(pay) });
+      debtors[di].amt  -= pay;
+      creditors[ci].amt -= pay;
+      if (debtors[di].amt  < 1) di++;
+      if (creditors[ci].amt < 1) ci++;
+    }
+    return result;
+  }
+
+  function markSettled(i) {
+    const el = document.getElementById('settle-' + i);
+    if (el) { el.classList.add('done'); el.querySelector('.settle-done-btn').textContent = '✓完了'; }
+  }
+
+  // 為替レート表示
+  const rateInfo = document.createElement('div');
+  rateInfo.style.cssText = 'font-size:12px;color:#9ca3af;text-align:center;padding:8px';
+  rateInfo.textContent = '※ ₩→¥ 換算レート：₩1 ≈ ¥0.11（概算）';
+  document.getElementById('section-kakeibo')?.appendChild(rateInfo);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "ソウル女子旅 2026",
+  "short_name": "ソウル旅",
+  "description": "4人でソウル完全制覇プラン 7/9〜7/11",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#fdf2f8",
+  "theme_color": "#ec4899",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
