@@ -10,6 +10,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ソウル旅">
 <link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
   :root {
     --pink: #f472b6;
@@ -1535,9 +1536,6 @@
 
   <!-- 地図 -->
   <div class="section" id="section-map">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
     <div class="card" style="padding:0;overflow:hidden;border-radius:var(--radius)">
       <!-- フィルターボタン -->
       <div style="padding:14px 16px 10px;display:flex;gap:8px;flex-wrap:wrap;background:white">
@@ -1630,12 +1628,7 @@
       });
     };
 
-    // タブ切替時に初期化
-    var origShow = window.showSection;
-    window.showSection = function(name) {
-      origShow(name);
-      if (name === 'map') { setTimeout(initMap, 100); setTimeout(function(){ if(map) map.invalidateSize(); }, 200); }
-    };
+    window._initSeoulMap = initMap;
   })();
   </script>
 
@@ -1776,6 +1769,7 @@
     event.target.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (name === 'kakeibo') renderKakeibo();
+    if (name === 'map') { setTimeout(function(){ if(window._initSeoulMap) window._initSeoulMap(); }, 150); }
   }
 
   /* ===== チェックリスト ===== */
@@ -2065,6 +2059,6 @@
   rateInfo.textContent = '※ ₩→¥ 換算レート：₩1 ≈ ¥0.11（概算）';
   document.getElementById('section-kakeibo')?.appendChild(rateInfo);
 </script>
-
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
