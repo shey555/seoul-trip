@@ -2,7 +2,7 @@
   "name": "ソウル女子旅 2026",
   "short_name": "ソウル旅",
   "description": "4人でソウル完全制覇プラン 7/9〜7/11",
-  "start_url": "/index.html",
+  "start_url": "/seoul-trip/",
   "display": "standalone",
   "background_color": "#fdf2f8",
   "theme_color": "#ec4899",
