@@ -691,6 +691,7 @@
   <button class="nav-tab" onclick="showSection('checklist')">✅ チェック</button>
   <button class="nav-tab" onclick="showSection('budget')">💰 予算</button>
   <button class="nav-tab" onclick="showSection('kakeibo')">📒 小遣い帳</button>
+  <button class="nav-tab" onclick="showSection('map')">🗺️ 地図</button>
 </nav>
 
 <div class="container">
@@ -1531,6 +1532,112 @@
     </div>
 
   </div>
+
+  <!-- 地図 -->
+  <div class="section" id="section-map">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <div class="card" style="padding:0;overflow:hidden;border-radius:var(--radius)">
+      <!-- フィルターボタン -->
+      <div style="padding:14px 16px 10px;display:flex;gap:8px;flex-wrap:wrap;background:white">
+        <button onclick="filterMap('all')" id="btn-all" style="flex:1;padding:8px 4px;border-radius:20px;border:none;font-size:13px;font-weight:700;cursor:pointer;background:#ec4899;color:white">すべて</button>
+        <button onclick="filterMap('food')" id="btn-food" style="flex:1;padding:8px 4px;border-radius:20px;border:2px solid #ef4444;font-size:13px;font-weight:700;cursor:pointer;background:white;color:#ef4444">🍽 食事</button>
+        <button onclick="filterMap('sight')" id="btn-sight" style="flex:1;padding:8px 4px;border-radius:20px;border:2px solid #3b82f6;font-size:13px;font-weight:700;cursor:pointer;background:white;color:#3b82f6">🏛 観光</button>
+        <button onclick="filterMap('shop')" id="btn-shop" style="flex:1;padding:8px 4px;border-radius:20px;border:2px solid #22c55e;font-size:13px;font-weight:700;cursor:pointer;background:white;color:#22c55e">🛍 買物</button>
+        <button onclick="filterMap('spa')" id="btn-spa" style="flex:1;padding:8px 4px;border-radius:20px;border:2px solid #a855f7;font-size:13px;font-weight:700;cursor:pointer;background:white;color:#a855f7">💆 癒し</button>
+      </div>
+      <!-- 凡例 -->
+      <div style="padding:0 16px 10px;display:flex;gap:12px;flex-wrap:wrap;background:white;font-size:12px">
+        <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ef4444;vertical-align:middle;margin-right:4px"></span>食事</span>
+        <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#3b82f6;vertical-align:middle;margin-right:4px"></span>観光・宿</span>
+        <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#22c55e;vertical-align:middle;margin-right:4px"></span>買い物</span>
+        <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#a855f7;vertical-align:middle;margin-right:4px"></span>スパ・マッサージ</span>
+      </div>
+      <!-- 地図 -->
+      <div id="seoul-map" style="height:520px;width:100%"></div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var mapInitialized = false;
+    var map, allMarkers = [];
+
+    var spots = [
+      // 食事系
+      {name:'陳玉華ハルメ元祖タッカンマリ', lat:37.5703, lng:127.0074, cat:'food', day:'1日目・夜', icon:'🍗'},
+      {name:'ロンドンベーグルミュージアム', lat:37.5825, lng:126.9851, cat:'food', day:'2日目・朝', icon:'🥯'},
+      {name:'コヒャンソンカルグクス', lat:37.5694, lng:127.0099, cat:'food', day:'2日目・昼', icon:'🍜'},
+      {name:'ヨンチョンヨンファ（韓牛）', lat:37.5242, lng:127.0469, cat:'food', day:'2日目・夜', icon:'🥩'},
+      {name:'神仙ソルロンタン', lat:37.5632, lng:126.9844, cat:'food', day:'3日目・朝', icon:'🍲'},
+      {name:'BHCチキン明洞本店', lat:37.5631, lng:126.9850, cat:'food', day:'3日目・昼', icon:'🍗'},
+      {name:'YO YOGURT', lat:37.5558, lng:126.9228, cat:'food', day:'2日目・おやつ', icon:'🍦'},
+      // 観光・宿
+      {name:'東橋洞の家（宿）', lat:37.5546, lng:126.9250, cat:'sight', day:'宿泊', icon:'🏠'},
+      {name:'北村韓屋村', lat:37.5826, lng:126.9840, cat:'sight', day:'2日目・午前', icon:'🏘'},
+      {name:'広蔵市場', lat:37.5694, lng:127.0099, cat:'sight', day:'2日目・昼', icon:'🏪'},
+      {name:'漢江公園 夜散歩', lat:37.5126, lng:126.9978, cat:'sight', day:'2日目・夜', icon:'🌊'},
+      // 買い物
+      {name:'明洞コスメ街', lat:37.5635, lng:126.9849, cat:'shop', day:'1日目・午後', icon:'💄'},
+      {name:'ロッテ免税店 明洞本店', lat:37.5639, lng:126.9830, cat:'shop', day:'1日目・夕方', icon:'🏬'},
+      {name:'漢南洞エリア', lat:37.5360, lng:127.0023, cat:'shop', day:'2日目・午後', icon:'🛍'},
+      {name:'COEX（江南）', lat:37.5128, lng:127.0592, cat:'shop', day:'2日目・午後', icon:'🏢'},
+      {name:'Juuneedu（パジャマ）', lat:37.5560, lng:126.9240, cat:'shop', day:'2日目・夕方', icon:'👘'},
+      // スパ・マッサージ
+      {name:'スパ1899（仁寺洞）', lat:37.5723, lng:126.9876, cat:'spa', day:'候補', icon:'🏆'},
+      {name:'明洞 フットマッサージ', lat:37.5636, lng:126.9841, cat:'spa', day:'候補', icon:'💆'},
+      {name:'弘大 タイ古式マッサージ', lat:37.5553, lng:126.9242, cat:'spa', day:'候補', icon:'💆'},
+    ];
+
+    var colors = {food:'#ef4444', sight:'#3b82f6', shop:'#22c55e', spa:'#a855f7'};
+
+    function makeIcon(color, emoji) {
+      return L.divIcon({
+        className:'',
+        html:'<div style="width:34px;height:34px;border-radius:50%;background:'+color+';border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:15px">'+emoji+'</div>',
+        iconSize:[34,34], iconAnchor:[17,17], popupAnchor:[0,-18]
+      });
+    }
+
+    function initMap() {
+      if (mapInitialized) return;
+      mapInitialized = true;
+      map = L.map('seoul-map').setView([37.555, 127.000], 12);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution:'© OpenStreetMap contributors', maxZoom:18
+      }).addTo(map);
+
+      spots.forEach(function(s) {
+        var m = L.marker([s.lat, s.lng], {icon: makeIcon(colors[s.cat], s.icon)})
+          .bindPopup('<b>'+s.icon+' '+s.name+'</b><br><span style="color:#6b7280;font-size:13px">'+s.day+'</span>')
+          .addTo(map);
+        m.cat = s.cat;
+        allMarkers.push(m);
+      });
+    }
+
+    window.filterMap = function(cat) {
+      document.querySelectorAll('[id^="btn-"]').forEach(function(b){
+        b.style.background='white'; b.style.color=b.style.borderColor||'#ccc';
+        if(b.style.borderColor) b.style.border='2px solid '+b.style.borderColor;
+      });
+      var btn = document.getElementById('btn-'+cat);
+      if(btn) { btn.style.background='#ec4899'; btn.style.color='white'; }
+      allMarkers.forEach(function(m){
+        if (cat==='all' || m.cat===cat) { if(!map.hasLayer(m)) map.addLayer(m); }
+        else { if(map.hasLayer(m)) map.removeLayer(m); }
+      });
+    };
+
+    // タブ切替時に初期化
+    var origShow = window.showSection;
+    window.showSection = function(name) {
+      origShow(name);
+      if (name === 'map') { setTimeout(initMap, 100); setTimeout(function(){ if(map) map.invalidateSize(); }, 200); }
+    };
+  })();
+  </script>
 
   <!-- 小遣い帳 -->
   <div class="section" id="section-kakeibo">
