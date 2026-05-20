@@ -1602,8 +1602,8 @@
       if (mapInitialized) return;
       mapInitialized = true;
       map = L.map('seoul-map').setView([37.555, 127.000], 12);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution:'© OpenStreetMap contributors', maxZoom:18
+      L.tileLayer('https://tile.openstreetmap.jp/styles/osm-bright/{z}/{x}/{y}.png', {
+        attribution:'© <a href="https://openstreetmap.org">OpenStreetMap</a> contributors', maxZoom:18
       }).addTo(map);
 
       spots.forEach(function(s) {
