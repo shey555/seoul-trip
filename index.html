@@ -510,6 +510,44 @@
   }
   .delete-btn:active { color: #ef4444; }
 
+  .expense-item.settled { opacity: 0.55; background: #f9fafb; }
+  .expense-item.settled .expense-desc { text-decoration: line-through; }
+  .settled-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 700;
+    background: #dcfce7;
+    color: #16a34a;
+    white-space: nowrap;
+  }
+  .settle-toggle-btn {
+    background: none;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 8px;
+    cursor: pointer;
+    color: #6b7280;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .settle-toggle-btn:active { border-color: #16a34a; color: #16a34a; }
+  .settle-all-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 13px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .settle-all-btn:active { opacity: 0.85; }
+
   .settlement-card {
     background: white;
     border-radius: 16px;
@@ -1671,6 +1709,7 @@
     <!-- 精算 -->
     <div class="settlement-card">
       <div class="card-title">🤝 精算（割り勘）</div>
+      <p style="font-size:12px;color:#9ca3af;margin:0 0 10px">「精算済✓」の支出は割り勘計算に含まれません（記録は残ります）</p>
       <div id="settlement-list"></div>
     </div>
 
@@ -1682,11 +1721,11 @@
 <div id="sync-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeSyncModal()">
   <div class="modal-box">
     <div class="modal-title">🔗 リアルタイム同期設定</div>
-    <p style="font-size:14px;color:#6b7280;margin-bottom:16px">データはすでに準備済みです！下のURLをそのまま貼り付けて接続してください。</p>
+    <p style="font-size:14px;color:#6b7280;margin-bottom:16px">現在は自動で全員に同期されています。通常この設定を変更する必要はありません。</p>
 
     <div class="modal-step" style="background:#fdf2f8;border:1.5px solid #fbcfe8">
       🔗 共有URL（全員同じURLを使ってください）<br>
-      <code style="font-size:11px;word-break:break-all;color:#ec4899">https://jsonblob.com/api/jsonBlob/019deaec-b479-74d2-ace8-3a3ad2f029ee</code>
+      <code style="font-size:11px;word-break:break-all;color:#ec4899">https://jsonblob.com/api/jsonBlob/019f3cc9-1322-74c2-b4d1-bba46f4b5525</code>
     </div>
     <div class="modal-step">
       <b>Step 1</b>　上のURLをコピーして下に貼り付ける
@@ -1744,19 +1783,42 @@
       {
         id: 1700000000000,
         payer: '齋藤', amount: 131452, currency: 'JPY', amountJPY: 131452,
-        category: '✈️ 交通', desc: '航空券代4名分（BX163/166）', day: '事前', settled: false
+        category: '✈️ 交通', desc: '航空券代4名分（BX163/166）', day: '事前', settled: true
       },
       {
         id: 1700000000001,
         payer: '齋藤', amount: 109281, currency: 'JPY', amountJPY: 109281,
-        category: '🏨 宿泊', desc: '宿泊費（東橋洞の家 2泊）', day: '事前', settled: false
+        category: '🏨 宿泊', desc: '宿泊費（東橋洞の家 2泊）', day: '事前', settled: true
       }
     ];
     localStorage.setItem('seoul_expenses', JSON.stringify(expenses));
   }
 
   /* ===== Firebase 同期 ===== */
+  const DEFAULT_SYNC_URL = 'https://jsonblob.com/api/jsonBlob/019f3cc9-1322-74c2-b4d1-bba46f4b5525';
+  const OLD_SYNC_URLS = ['https://jsonblob.com/api/jsonBlob/019deaec-b479-74d2-ace8-3a3ad2f029ee'];
   let FIREBASE_URL = localStorage.getItem('seoul_fb_url') || '';
+  // 未設定・旧URLの場合は自動で共有データに接続（ローカルの支出は統合してから同期）
+  if (!FIREBASE_URL || OLD_SYNC_URLS.includes(FIREBASE_URL)) {
+    FIREBASE_URL = DEFAULT_SYNC_URL;
+    localStorage.setItem('seoul_fb_url', FIREBASE_URL);
+    fetch(DEFAULT_SYNC_URL)
+      .then(r => r.json())
+      .then(remote => {
+        if (!Array.isArray(remote)) return;
+        const ids = new Set(remote.map(e => e.id));
+        const merged = remote.concat(expenses.filter(e => !ids.has(e.id)));
+        expenses = merged;
+        localStorage.setItem('seoul_expenses', JSON.stringify(expenses));
+        renderKakeibo();
+        return fetch(DEFAULT_SYNC_URL, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(merged)
+        });
+      })
+      .catch(() => {});
+  }
   let syncTimer = null;
   let lastHash = '';
   let isSyncing = false;
@@ -1890,28 +1952,32 @@
   }
 
   function renderKakeibo() {
+    const active = expenses.filter(e => !e.settled);
     const totalJPY = expenses.reduce((s, e) => s + e.amountJPY, 0);
+    const activeJPY = active.reduce((s, e) => s + e.amountJPY, 0);
     const perPerson = Math.round(totalJPY / 4);
+    const perPersonActive = Math.round(activeJPY / 4);
 
-    // ヒーロー
+    // ヒーロー（合計は全支出の記録、未精算額を併記）
     document.getElementById('kk-total').textContent = '¥' + totalJPY.toLocaleString();
-    document.getElementById('kk-per-person').textContent = '1人あたり ¥' + perPerson.toLocaleString();
+    document.getElementById('kk-per-person').textContent =
+      '1人あたり ¥' + perPerson.toLocaleString() + '　／　未精算 ¥' + activeJPY.toLocaleString();
 
-    // メンバーカード
+    // メンバーカード（未精算分のみで計算）
     const paid = {};
     MEMBERS.forEach(m => paid[m] = 0);
-    expenses.forEach(e => { paid[e.payer] += e.amountJPY; });
+    active.forEach(e => { paid[e.payer] += e.amountJPY; });
 
     const grid = document.getElementById('member-grid');
     grid.innerHTML = MEMBERS.map((m, i) => {
-      const balance = paid[m] - perPerson;
+      const balance = paid[m] - perPersonActive;
       const balClass = balance > 0 ? 'balance-plus' : balance < 0 ? 'balance-minus' : 'balance-zero';
       const balText  = balance > 0 ? `+¥${balance.toLocaleString()} 受取` :
                        balance < 0 ? `-¥${Math.abs(balance).toLocaleString()} 支払` : '±0 ちょうど';
       return `
         <div class="member-card m${i}">
           <div class="member-name">${m}</div>
-          <div class="member-paid-label">支払済み</div>
+          <div class="member-paid-label">立替中（未精算）</div>
           <div class="member-paid">¥${paid[m].toLocaleString()}</div>
           <div class="member-balance ${balClass}">${balText}</div>
         </div>`;
@@ -1929,19 +1995,21 @@
           ? `₩${e.amount.toLocaleString()} (¥${e.amountJPY.toLocaleString()})`
           : `¥${e.amountJPY.toLocaleString()}`;
         const catIcon = e.category.split(' ')[0];
+        const settledBadge = e.settled ? '　<span class="settled-badge">精算済✓</span>' : '';
         return `
-          <div class="expense-item">
+          <div class="expense-item${e.settled ? ' settled' : ''}">
             <div class="expense-cat-icon" style="background:${col}22">${catIcon}</div>
             <div class="expense-info">
               <div class="expense-desc">${e.desc}</div>
               <div class="expense-meta">
                 <span class="expense-payer-badge" style="background:${col}22;color:${col}">${e.payer}</span>
-                　${e.day}　${e.category.split(' ').slice(1).join(' ')}
+                　${e.day}　${e.category.split(' ').slice(1).join(' ')}${settledBadge}
               </div>
             </div>
             <div style="text-align:right">
               <div class="expense-amount">${amtStr}</div>
             </div>
+            <button class="settle-toggle-btn" onclick="toggleSettled(${e.id})">${e.settled ? '戻す' : '済に'}</button>
             <button class="delete-btn" onclick="deleteExpense(${e.id})">✕</button>
           </div>`;
       }).join('');
@@ -1961,12 +2029,14 @@
           <div class="cat-item-val">¥${amt.toLocaleString()}</div>
         </div>`).join('') || '<div style="color:#9ca3af;font-size:14px">まだデータなし</div>';
 
-    // 精算計算
+    // 精算計算（未精算分のみ）
     const balance = {};
-    MEMBERS.forEach(m => balance[m] = paid[m] - perPerson);
+    MEMBERS.forEach(m => balance[m] = paid[m] - perPersonActive);
     const settlements = calcSettlements(balance);
     const settlEl = document.getElementById('settlement-list');
-    if (settlements.length === 0) {
+    if (active.length === 0) {
+      settlEl.innerHTML = '<div class="all-even">✨ 未精算の支出はありません</div>';
+    } else if (settlements.length === 0) {
       settlEl.innerHTML = '<div class="all-even">🎉 全員ちょうど！精算不要です</div>';
     } else {
       settlEl.innerHTML = settlements.map((s, i) => `
@@ -1974,8 +2044,24 @@
           <span>💸</span>
           <span><b>${s.from}</b> → <b>${s.to}</b> に <b>¥${s.amount.toLocaleString()}</b> 支払う</span>
           <button class="settle-done-btn" onclick="markSettled(${i})">済✓</button>
-        </div>`).join('');
+        </div>`).join('') +
+        `<button class="settle-all-btn" onclick="settleAll()">🎉 精算完了！すべて精算済みにする</button>`;
     }
+  }
+
+  function toggleSettled(id) {
+    const e = expenses.find(x => x.id === id);
+    if (!e) return;
+    e.settled = !e.settled;
+    saveExpenses();
+    renderKakeibo();
+  }
+
+  function settleAll() {
+    if (!confirm('未精算の支出をすべて「精算済み」にします。\n実際の支払いが終わってから押してください。よろしいですか？')) return;
+    expenses.forEach(e => { e.settled = true; });
+    saveExpenses();
+    renderKakeibo();
   }
 
   function calcSettlements(balance) {
