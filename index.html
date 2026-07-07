@@ -1527,60 +1527,161 @@
   <!-- 地図 -->
   <div class="section" id="section-map">
     <div class="card" style="padding:0;overflow:hidden;border-radius:var(--radius)">
-      <!-- フィルターボタン -->
-      <div style="padding:14px 16px 10px;display:flex;gap:8px;flex-wrap:wrap;background:white">
-        <button onclick="filterMap('all')" id="btn-all" style="flex:1;padding:8px 4px;border-radius:20px;border:none;font-size:13px;font-weight:700;cursor:pointer;background:#ec4899;color:white">すべて</button>
-        <button onclick="filterMap('food')" id="btn-food" style="flex:1;padding:8px 4px;border-radius:20px;border:2px solid #ef4444;font-size:13px;font-weight:700;cursor:pointer;background:white;color:#ef4444">🍽 食事</button>
-        <button onclick="filterMap('sight')" id="btn-sight" style="flex:1;padding:8px 4px;border-radius:20px;border:2px solid #3b82f6;font-size:13px;font-weight:700;cursor:pointer;background:white;color:#3b82f6">🏛 観光</button>
-        <button onclick="filterMap('shop')" id="btn-shop" style="flex:1;padding:8px 4px;border-radius:20px;border:2px solid #22c55e;font-size:13px;font-weight:700;cursor:pointer;background:white;color:#22c55e">🛍 買物</button>
+      <style>
+        .mfilter-row { padding:0 16px 8px; display:flex; gap:8px; flex-wrap:wrap; background:white; }
+        .mday-btn, .mcat-btn {
+          flex:1; padding:8px 4px; border-radius:20px; font-size:13px; font-weight:700;
+          cursor:pointer; background:white; white-space:nowrap;
+        }
+        .mday-btn { border:2px solid #ec4899; color:#ec4899; }
+        .mday-btn.on { background:#ec4899; color:white; }
+        .mcat-btn.c-all { border:2px solid #6b7280; color:#6b7280; }
+        .mcat-btn.c-food { border:2px solid #ef4444; color:#ef4444; }
+        .mcat-btn.c-sight { border:2px solid #3b82f6; color:#3b82f6; }
+        .mcat-btn.c-shop { border:2px solid #22c55e; color:#22c55e; }
+        .mcat-btn.on { color:white; }
+        .mcat-btn.on.c-all { background:#6b7280; }
+        .mcat-btn.on.c-food { background:#ef4444; }
+        .mcat-btn.on.c-sight { background:#3b82f6; }
+        .mcat-btn.on.c-shop { background:#22c55e; }
+        .map-route-note { padding:0 16px 10px; background:white; font-size:12px; color:#9ca3af; }
+        .map-spot-list { background:white; border-top:1px solid #f3f4f6; }
+        .map-spot-item {
+          display:flex; align-items:center; gap:10px; padding:11px 16px;
+          border-bottom:1px solid #f9fafb; cursor:pointer; font-size:14px;
+        }
+        .map-spot-item:active { background:#fdf2f8; }
+        .map-spot-num {
+          width:22px; height:22px; border-radius:50%; background:#ec4899; color:white;
+          font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+        }
+        .map-spot-time { margin-left:auto; font-size:12px; color:#9ca3af; white-space:nowrap; }
+      </style>
+      <!-- 日程フィルター -->
+      <div class="mfilter-row" style="padding-top:14px">
+        <button class="mday-btn on" id="mday-all" onclick="filterMapDay('all')">全日程</button>
+        <button class="mday-btn" id="mday-1" onclick="filterMapDay('1日目')">1日目</button>
+        <button class="mday-btn" id="mday-2" onclick="filterMapDay('2日目')">2日目</button>
+        <button class="mday-btn" id="mday-3" onclick="filterMapDay('3日目')">3日目</button>
       </div>
-      <!-- 凡例 -->
-      <div style="padding:0 16px 10px;display:flex;gap:12px;flex-wrap:wrap;background:white;font-size:12px">
-        <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ef4444;vertical-align:middle;margin-right:4px"></span>食事</span>
-        <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#3b82f6;vertical-align:middle;margin-right:4px"></span>観光・宿</span>
-        <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#22c55e;vertical-align:middle;margin-right:4px"></span>買い物</span>
+      <!-- カテゴリフィルター -->
+      <div class="mfilter-row">
+        <button class="mcat-btn c-all on" id="mcat-all" onclick="filterMapCat('all')">すべて</button>
+        <button class="mcat-btn c-food" id="mcat-food" onclick="filterMapCat('food')">🍽 食事</button>
+        <button class="mcat-btn c-sight" id="mcat-sight" onclick="filterMapCat('sight')">🏛 観光</button>
+        <button class="mcat-btn c-shop" id="mcat-shop" onclick="filterMapCat('shop')">🛍 買物</button>
       </div>
+      <div class="map-route-note">💡 日程を選ぶと訪問順の番号とルートが表示されます</div>
       <!-- 地図 -->
       <div id="seoul-map" style="height:520px;width:100%"></div>
+      <!-- 訪問順リスト -->
+      <div class="map-spot-list" id="map-spot-list" style="display:none"></div>
     </div>
   </div>
 
   <script>
   (function(){
     var mapInitialized = false;
-    var map, allMarkers = [];
+    var map, allMarkers = [], routeLine = null;
+    var curDay = 'all', curCat = 'all';
 
     var spots = [
-      // 食事系
-      {name:'陳玉華ハルメ元祖タッカンマリ', lat:37.5703, lng:127.0074, cat:'food', day:'1日目・夜', icon:'🍗'},
-      {name:'ロンドンベーグルミュージアム', lat:37.5825, lng:126.9851, cat:'food', day:'2日目・朝', icon:'🥯'},
-      {name:'コヒャンソンカルグクス', lat:37.5694, lng:127.0099, cat:'food', day:'2日目・昼', icon:'🍜'},
-      {name:'ヨンチョンヨンファ（韓牛）', lat:37.5242, lng:127.0469, cat:'food', day:'2日目・夜', icon:'🥩'},
-      {name:'神仙ソルロンタン', lat:37.5632, lng:126.9844, cat:'food', day:'3日目・朝', icon:'🍲'},
-      {name:'BHCチキン明洞本店', lat:37.5631, lng:126.9850, cat:'food', day:'3日目・昼', icon:'🍗'},
-      {name:'YO YOGURT', lat:37.5558, lng:126.9228, cat:'food', day:'2日目・おやつ', icon:'🍦'},
-      // 観光・宿
-      {name:'東橋洞の家（宿）', lat:37.5546, lng:126.9250, cat:'sight', day:'宿泊', icon:'🏠'},
-      {name:'北村韓屋村', lat:37.5826, lng:126.9840, cat:'sight', day:'2日目・午前', icon:'🏘'},
-      {name:'広蔵市場', lat:37.5694, lng:127.0099, cat:'sight', day:'2日目・昼', icon:'🏪'},
-      {name:'漢江公園 夜散歩', lat:37.5126, lng:126.9978, cat:'sight', day:'2日目・夜', icon:'🌊'},
-      // 買い物
-      {name:'JunoHair 明洞4号店', lat:37.5631, lng:126.9846, cat:'shop', day:'1日目・夜', icon:'💇'},
-      {name:'明洞コスメ＆夜食', lat:37.5635, lng:126.9849, cat:'shop', day:'1日目・夜', icon:'💄'},
-      {name:'漢南洞エリア', lat:37.5360, lng:127.0023, cat:'shop', day:'2日目・午後', icon:'🛍'},
-      {name:'COEX（江南）', lat:37.5128, lng:127.0592, cat:'shop', day:'2日目・午後', icon:'🏢'},
-      {name:'Juuneedu（パジャマ）', lat:37.5560, lng:126.9240, cat:'shop', day:'2日目・夕方', icon:'👘'},
+      // 1日目（訪問順）
+      {name:'陳玉華ハルメ元祖タッカンマリ', lat:37.5703, lng:127.0074, cat:'food', d:'1日目', time:'17:00', o:1, icon:'🍗'},
+      {name:'JunoHair 明洞4号店', lat:37.5628, lng:126.9846, cat:'shop', d:'1日目', time:'18:30', o:2, icon:'💇'},
+      {name:'明洞コスメ＆夜食', lat:37.5638, lng:126.9852, cat:'shop', d:'1日目', time:'19:45', o:3, icon:'💄'},
+      // 2日目（訪問順）
+      {name:'ロンドンベーグルミュージアム', lat:37.5825, lng:126.9851, cat:'food', d:'2日目', time:'07:45', o:1, icon:'🥯'},
+      {name:'北村韓屋村', lat:37.5826, lng:126.9840, cat:'sight', d:'2日目', time:'09:30', o:2, icon:'🏘'},
+      {name:'広蔵市場', lat:37.5694, lng:127.0096, cat:'sight', d:'2日目', time:'11:00', o:3, icon:'🏪'},
+      {name:'コヒャンソンカルグクス', lat:37.5698, lng:127.0104, cat:'food', d:'2日目', time:'12:00', o:4, icon:'🍜'},
+      {name:'漢南洞エリア（リウム美術館）', lat:37.5360, lng:127.0023, cat:'shop', d:'2日目', time:'14:00', o:5, icon:'🛍'},
+      {name:'COEX（江南）', lat:37.5128, lng:127.0592, cat:'shop', d:'2日目', time:'16:00', o:6, icon:'🏢'},
+      {name:'Juuneedu（パジャマ）', lat:37.5560, lng:126.9240, cat:'shop', d:'2日目', time:'17:30', o:7, icon:'👘'},
+      {name:'YO YOGURT', lat:37.5558, lng:126.9228, cat:'food', d:'2日目', time:'18:00', o:8, icon:'🍦'},
+      {name:'ヨンチョンヨンファ（韓牛）', lat:37.5242, lng:127.0469, cat:'food', d:'2日目', time:'19:00', o:9, icon:'🥩'},
+      {name:'漢江公園 夜散歩', lat:37.5126, lng:126.9978, cat:'sight', d:'2日目', time:'21:30', o:10, icon:'🌊'},
+      // 3日目（訪問順）
+      {name:'神仙ソルロンタン 明洞店', lat:37.5636, lng:126.9838, cat:'food', d:'3日目', time:'10:30', o:1, icon:'🍲'},
+      {name:'BHCチキン明洞本店', lat:37.5631, lng:126.9853, cat:'food', d:'3日目', time:'11:50', o:2, icon:'🍗'},
+      // 宿（常に表示）
+      {name:'東橋洞の家（宿）', lat:37.5546, lng:126.9250, cat:'sight', d:'宿', time:'', o:0, icon:'🏠'}
     ];
 
-    var colors = {food:'#ef4444', sight:'#3b82f6', shop:'#22c55e', spa:'#a855f7'};
+    var colors = {food:'#ef4444', sight:'#3b82f6', shop:'#22c55e'};
 
-    function makeIcon(color, emoji) {
+    function makeIcon(color, emoji, num) {
+      var badge = num
+        ? '<div style="position:absolute;top:-7px;right:-7px;width:18px;height:18px;border-radius:50%;background:#111827;color:white;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid white">'+num+'</div>'
+        : '';
       return L.divIcon({
         className:'',
-        html:'<div style="width:34px;height:34px;border-radius:50%;background:'+color+';border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:15px">'+emoji+'</div>',
+        html:'<div style="position:relative;width:34px;height:34px;border-radius:50%;background:'+color+';border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:15px">'+emoji+badge+'</div>',
         iconSize:[34,34], iconAnchor:[17,17], popupAnchor:[0,-18]
       });
     }
+
+    function visible(s) {
+      var dayOk = (curDay === 'all') || (s.d === curDay) || (s.d === '宿');
+      var catOk = (curCat === 'all') || (s.cat === curCat);
+      return dayOk && catOk;
+    }
+
+    function update() {
+      if (!map) return;
+      var showNums = curDay !== 'all';
+      var boundPts = [];
+
+      allMarkers.forEach(function(m){
+        var s = m.spot;
+        if (visible(s)) {
+          m.setIcon(makeIcon(colors[s.cat], s.icon, (showNums && s.d === curDay) ? s.o : null));
+          if (!map.hasLayer(m)) map.addLayer(m);
+          boundPts.push([s.lat, s.lng]);
+        } else {
+          if (map.hasLayer(m)) map.removeLayer(m);
+        }
+      });
+
+      // 訪問順ルート線
+      if (routeLine) { map.removeLayer(routeLine); routeLine = null; }
+      if (showNums) {
+        var pts = spots.filter(function(s){ return s.d === curDay && visible(s); })
+                       .sort(function(a,b){ return a.o - b.o; })
+                       .map(function(s){ return [s.lat, s.lng]; });
+        if (pts.length > 1) {
+          routeLine = L.polyline(pts, {color:'#ec4899', weight:3, dashArray:'6 8', opacity:0.7}).addTo(map);
+        }
+      }
+
+      if (boundPts.length > 0) map.fitBounds(boundPts, {padding:[40,40], maxZoom:15});
+
+      // 訪問順リスト
+      var listEl = document.getElementById('map-spot-list');
+      if (showNums) {
+        var items = spots.filter(function(s){ return s.d === curDay && visible(s); })
+                         .sort(function(a,b){ return a.o - b.o; });
+        listEl.innerHTML = items.map(function(s){
+          return '<div class="map-spot-item" onclick="window._mapFocus('+s.lat+','+s.lng+')">' +
+            '<div class="map-spot-num">'+s.o+'</div>' +
+            '<span>'+s.icon+' '+s.name+'</span>' +
+            '<span class="map-spot-time">'+s.time+'</span>' +
+          '</div>';
+        }).join('');
+        listEl.style.display = 'block';
+      } else {
+        listEl.style.display = 'none';
+      }
+    }
+
+    window._mapFocus = function(lat, lng) {
+      if (!map) return;
+      map.setView([lat, lng], 16);
+      allMarkers.forEach(function(m){
+        if (m.spot.lat === lat && m.spot.lng === lng) m.openPopup();
+      });
+      document.getElementById('seoul-map').scrollIntoView({behavior:'smooth', block:'center'});
+    };
 
     function initMap() {
       if (mapInitialized) return;
@@ -1591,25 +1692,29 @@
       }).addTo(map);
 
       spots.forEach(function(s) {
+        var sub = s.d === '宿' ? '宿泊（2泊）' : s.d + (s.time ? '　' + s.time + '〜' : '');
         var m = L.marker([s.lat, s.lng], {icon: makeIcon(colors[s.cat], s.icon)})
-          .bindPopup('<b>'+s.icon+' '+s.name+'</b><br><span style="color:#6b7280;font-size:13px">'+s.day+'</span>')
-          .addTo(map);
-        m.cat = s.cat;
+          .bindPopup('<b>'+s.icon+' '+s.name+'</b><br><span style="color:#6b7280;font-size:13px">'+sub+'</span>');
+        m.spot = s;
         allMarkers.push(m);
       });
+      update();
     }
 
-    window.filterMap = function(cat) {
-      document.querySelectorAll('[id^="btn-"]').forEach(function(b){
-        b.style.background='white'; b.style.color=b.style.borderColor||'#ccc';
-        if(b.style.borderColor) b.style.border='2px solid '+b.style.borderColor;
-      });
-      var btn = document.getElementById('btn-'+cat);
-      if(btn) { btn.style.background='#ec4899'; btn.style.color='white'; }
-      allMarkers.forEach(function(m){
-        if (cat==='all' || m.cat===cat) { if(!map.hasLayer(m)) map.addLayer(m); }
-        else { if(map.hasLayer(m)) map.removeLayer(m); }
-      });
+    window.filterMapDay = function(day) {
+      curDay = day;
+      document.querySelectorAll('.mday-btn').forEach(function(b){ b.classList.remove('on'); });
+      var btn = document.getElementById(day === 'all' ? 'mday-all' : 'mday-' + day.charAt(0));
+      if (btn) btn.classList.add('on');
+      update();
+    };
+
+    window.filterMapCat = function(cat) {
+      curCat = cat;
+      document.querySelectorAll('.mcat-btn').forEach(function(b){ b.classList.remove('on'); });
+      var btn = document.getElementById('mcat-' + cat);
+      if (btn) btn.classList.add('on');
+      update();
     };
 
     window._initSeoulMap = initMap;
