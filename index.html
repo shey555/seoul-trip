@@ -838,10 +838,10 @@
 
         <div class="timeline-item">
           <div class="timeline-dot airport"></div>
-          <div class="timeline-time">09:30</div>
+          <div class="timeline-time">09:10</div>
           <div class="timeline-card move">
             <div class="timeline-place">🛫 成田空港T1 集合</div>
-            <div class="timeline-desc">チェックイン・搭乗手続き。機内食なしなので空港内で軽食を！</div>
+            <div class="timeline-desc">第1ターミナル 南ウィング 4階 Jカウンター。チェックイン・搭乗手続き。機内食なしなので空港内で軽食を！</div>
           </div>
         </div>
 
@@ -883,8 +883,17 @@
         </div>
 
         <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">17:30〜18:30</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">💇 JunoHair 明洞4号店</div>
+            <div class="timeline-desc">旅行の疲れをリセット！韓国の流行ヘアスタイルに整えてもらおう。予約推奨。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
           <div class="timeline-dot special"></div>
-          <div class="timeline-time">17:00〜18:20</div>
+          <div class="timeline-time">19:00〜20:30</div>
           <div class="timeline-card food">
             <div class="timeline-place">🍗 陳玉華ハルメ元祖タッカンマリ</div>
             <div class="timeline-desc">ソウル初夜は鉄板の鶏鍋！コラーゲンたっぷりスープが美味。〆はカルグクスで。</div>
@@ -894,16 +903,7 @@
 
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-time">18:30〜19:30</div>
-          <div class="timeline-card shop">
-            <div class="timeline-place">💇 JunoHair 明洞4号店</div>
-            <div class="timeline-desc">旅行の疲れをリセット！韓国の流行ヘアスタイルに整えてもらおう。予約推奨。</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-time">19:45〜21:00</div>
+          <div class="timeline-time">20:45〜22:00</div>
           <div class="timeline-card shop">
             <div class="timeline-place">💄 明洞コスメ＆夜食スポット</div>
             <div class="timeline-desc">BBクリーム・マスクシートなど人気コスメを購入。遅くまで営業する屋台やカフェで軽く食事＆休憩。</div>
@@ -912,7 +912,7 @@
 
         <div class="timeline-item">
           <div class="timeline-dot special"></div>
-          <div class="timeline-time">21:30</div>
+          <div class="timeline-time">22:30</div>
           <div class="timeline-card hotel">
             <div class="timeline-place">🏠 宿に帰着・まったりタイム</div>
             <div class="timeline-desc">初日の疲れをゆっくり癒そう。シャワーでさっぱり🚿</div>
@@ -1192,18 +1192,18 @@
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
           <div class="check-box">✓</div>
-          <div class="check-icon">🍲</div>
+          <div class="check-icon">💇</div>
           <div>
-            <div class="check-name">陳玉華ハルメ元祖タッカンマリ</div>
-            <div class="check-time">1日目 17:00 · 鍾路5街</div>
+            <div class="check-name">JunoHair 明洞4号店</div>
+            <div class="check-time">1日目 17:30 · 明洞</div>
           </div>
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
           <div class="check-box">✓</div>
-          <div class="check-icon">💇</div>
+          <div class="check-icon">🍲</div>
           <div>
-            <div class="check-name">JunoHair 明洞4号店</div>
-            <div class="check-time">1日目 18:30 · 明洞</div>
+            <div class="check-name">陳玉華ハルメ元祖タッカンマリ</div>
+            <div class="check-time">1日目 19:00 · 鍾路5街</div>
           </div>
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
@@ -1211,7 +1211,7 @@
           <div class="check-icon">💄</div>
           <div>
             <div class="check-name">明洞コスメ＆夜食</div>
-            <div class="check-time">1日目 19:45 · 明洞</div>
+            <div class="check-time">1日目 20:45 · 明洞</div>
           </div>
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
@@ -1587,9 +1587,9 @@
 
     var spots = [
       // 1日目（訪問順）
-      {name:'陳玉華ハルメ元祖タッカンマリ', lat:37.5703, lng:127.0074, cat:'food', d:'1日目', time:'17:00', o:1, icon:'🍗'},
-      {name:'JunoHair 明洞4号店', lat:37.5628, lng:126.9846, cat:'shop', d:'1日目', time:'18:30', o:2, icon:'💇'},
-      {name:'明洞コスメ＆夜食', lat:37.5638, lng:126.9852, cat:'shop', d:'1日目', time:'19:45', o:3, icon:'💄'},
+      {name:'JunoHair 明洞4号店', lat:37.5628, lng:126.9846, cat:'shop', d:'1日目', time:'17:30', o:1, icon:'💇'},
+      {name:'陳玉華ハルメ元祖タッカンマリ', lat:37.5703, lng:127.0074, cat:'food', d:'1日目', time:'19:00', o:2, icon:'🍗'},
+      {name:'明洞コスメ＆夜食', lat:37.5638, lng:126.9852, cat:'shop', d:'1日目', time:'20:45', o:3, icon:'💄'},
       // 2日目（訪問順）
       {name:'ロンドンベーグルミュージアム', lat:37.5825, lng:126.9851, cat:'food', d:'2日目', time:'07:45', o:1, icon:'🥯'},
       {name:'北村韓屋村', lat:37.5826, lng:126.9840, cat:'sight', d:'2日目', time:'09:30', o:2, icon:'🏘'},
