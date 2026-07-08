@@ -1019,6 +1019,25 @@
         </div>
       </div>
 
+      <!-- オプション案2 -->
+      <button class="option-toggle" id="opt2-toggle" onclick="toggleOption('opt2')">
+        <span>🔀 オプション案：夕飯をタッカル元祖チプに変更</span>
+        <span class="chev">▼</span>
+      </button>
+      <div class="option-panel" id="opt2-panel">
+        <div class="option-note">
+          💡 ルート・時間はそのままに、夕飯の店だけ入れ替えるシンプルな案。ソウル駅裏（忠正路）で明洞から地下鉄2駅・徒歩含め約10分と移動が楽。手作り水餃子入りの濃厚タッカンマリが名物、約30年の老舗。<br>
+          ⚖️ 陳玉華ハルメ（東大門・行列できやすい／27年継ぎ足しスープが看板）とどちらにするか、当日の混み具合や気分で決めてOK。
+        </div>
+        <div class="option-item">
+          <div class="option-time">19:00〜20:30</div>
+          <div>
+            <div class="option-place">🍗 タッカル元祖チプで夕飯</div>
+            <div class="option-desc">中区中林洞・忠正路駅4番出口すぐ。他の時間は変更なし</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1277,7 +1296,7 @@
 
     <div class="card">
       <div class="card-title">✅ スポット制覇チェックリスト</div>
-      <div class="check-count" id="check-count">0 / 15 完了</div>
+      <div class="check-count" id="check-count">0 / 21 完了</div>
       <div class="check-progress">
         <div class="check-progress-bar" id="progress-bar" style="width:0%"></div>
       </div>
@@ -1287,15 +1306,7 @@
           <div class="check-icon">💱</div>
           <div>
             <div class="check-name">大使館前両替</div>
-            <div class="check-time">1日目 15:55 · 光化門</div>
-          </div>
-        </div>
-        <div class="checklist-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-icon">🛍</div>
-          <div>
-            <div class="check-name">オリーブヤング 明洞中央店</div>
-            <div class="check-time">1日目 16:30 · 明洞</div>
+            <div class="check-time">1日目 16:00 · 光化門</div>
           </div>
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
@@ -1335,47 +1346,7 @@
           <div class="check-icon">🏘</div>
           <div>
             <div class="check-name">北村韓屋村</div>
-            <div class="check-time">2日目 09:15 · 安国</div>
-          </div>
-        </div>
-        <div class="checklist-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-icon">🌊</div>
-          <div>
-            <div class="check-name">漢江公園（インスタントラーメン）</div>
-            <div class="check-time">2日目 13:30 · バンポ地区</div>
-          </div>
-        </div>
-        <div class="checklist-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-icon">🧥</div>
-          <div>
-            <div class="check-name">Juuneedu（パジャマ）</div>
-            <div class="check-time">2日目 16:00 · 弘大</div>
-          </div>
-        </div>
-        <div class="checklist-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-icon">🍦</div>
-          <div>
-            <div class="check-name">YO YOGURT</div>
-            <div class="check-time">2日目 17:00 · 弘大</div>
-          </div>
-        </div>
-        <div class="checklist-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-icon">🍽</div>
-          <div>
-            <div class="check-name">ヨンチョンヨンファ</div>
-            <div class="check-time">2日目 19:00 · 清潭洞 · 24h営業</div>
-          </div>
-        </div>
-        <div class="checklist-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-icon">🍜</div>
-          <div>
-            <div class="check-name">コヒャンソンカルグクス</div>
-            <div class="check-time">2日目 12:10 · 広蔵市場内</div>
+            <div class="check-time">2日目 09:30 · 安国</div>
           </div>
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
@@ -1388,10 +1359,98 @@
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
           <div class="check-box">✓</div>
+          <div class="check-icon">🫙</div>
+          <div>
+            <div class="check-name">中部市場（ごま油購入）</div>
+            <div class="check-time">2日目 11:50 · 乙支路4街</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍜</div>
+          <div>
+            <div class="check-name">コヒャンソンカルグクス</div>
+            <div class="check-time">2日目 12:10 · 広蔵市場内</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍡</div>
+          <div>
+            <div class="check-name">広蔵市場チャプサルクァベギ</div>
+            <div class="check-time">2日目 12:55 · 広蔵市場</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🎨</div>
+          <div>
+            <div class="check-name">リウム美術館</div>
+            <div class="check-time">2日目 14:00 · 漢南洞 · 要予約確認</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">📚</div>
+          <div>
+            <div class="check-name">ビョルマダン図書館</div>
+            <div class="check-time">2日目 16:00 · COEX</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">👜</div>
+          <div>
+            <div class="check-name">Pleats Mama</div>
+            <div class="check-time">2日目 17:00 · 江南</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🧥</div>
+          <div>
+            <div class="check-name">Juuneedu（パジャマ）</div>
+            <div class="check-time">2日目 17:30 · 江南</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍦</div>
+          <div>
+            <div class="check-name">YO YOGURT</div>
+            <div class="check-time">2日目 18:00 · 江南</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
           <div class="check-icon">🍽</div>
           <div>
-            <div class="check-name">イルミチプ</div>
-            <div class="check-time">3日目 11:00 · 東大門周辺</div>
+            <div class="check-name">ヨンチョンヨンファ</div>
+            <div class="check-time">2日目 19:00 · 清潭洞</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🌊</div>
+          <div>
+            <div class="check-name">漢江公園 夜散歩</div>
+            <div class="check-time">2日目 21:30 · バンポ地区</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🍲</div>
+          <div>
+            <div class="check-name">神仙ソルロンタン 明洞店</div>
+            <div class="check-time">3日目 10:30 · 明洞</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">🌸</div>
+          <div>
+            <div class="check-name">Hetras（香水専門店）</div>
+            <div class="check-time">3日目 11:20 · 明洞</div>
           </div>
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
@@ -1399,7 +1458,15 @@
           <div class="check-icon">🍗</div>
           <div>
             <div class="check-name">BHCチキン 明洞本店</div>
-            <div class="check-time">3日目 12:00 · 明洞</div>
+            <div class="check-time">3日目 11:50 · 明洞</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
+          <div class="check-icon">💄</div>
+          <div>
+            <div class="check-name">明洞 ラストショッピング</div>
+            <div class="check-time">3日目 12:30 · 明洞</div>
           </div>
         </div>
       </div>
@@ -1415,6 +1482,16 @@
           </div>
           <div class="reserve-reason">人気の贅沢レストラン。席の確保が必須。</div>
           <div class="reserve-how">→ 公式サイトまたはNaver予約</div>
+        </div>
+      </div>
+      <div class="reserve-item urgent">
+        <div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+            <span class="reserve-priority priority-must">必須</span>
+            <div class="reserve-name">🎨 リウム美術館</div>
+          </div>
+          <div class="reserve-reason">月曜定休。事前予約制のため訪問日の空き状況を要確認。</div>
+          <div class="reserve-how">→ 公式サイトで日時指定予約</div>
         </div>
       </div>
       <div class="reserve-item recommend">
@@ -1722,7 +1799,8 @@
       {name:'京東市場', lat:37.5787, lng:127.0368, cat:'option', d:'候補', time:'', o:0, icon:'🏮'},
       {name:'光州キルムチッ（ごま油店）', lat:37.5790, lng:127.0374, cat:'option', d:'候補', time:'', o:0, icon:'🫙'},
       {name:'安東チプ（カルグクス）', lat:37.5784, lng:127.0370, cat:'option', d:'候補', time:'', o:0, icon:'🍜'},
-      {name:'ソンガネタッカンマリ', lat:37.5745, lng:127.0235, cat:'option', d:'候補', time:'', o:0, icon:'🍗'}
+      {name:'ソンガネタッカンマリ', lat:37.5745, lng:127.0235, cat:'option', d:'候補', time:'', o:0, icon:'🍗'},
+      {name:'タッカル元祖チプ', lat:37.5605, lng:126.9700, cat:'option', d:'候補', time:'', o:0, icon:'🍗'}
     ];
 
     var colors = {food:'#ef4444', sight:'#3b82f6', shop:'#22c55e', option:'#a855f7'};
