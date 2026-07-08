@@ -388,6 +388,57 @@
     line-height: 1.7;
   }
 
+  /* ===== オプション案 ===== */
+  .option-toggle {
+    width: 100%;
+    text-align: left;
+    background: linear-gradient(135deg, #fdf4ff, #fce7f3);
+    border: 2px dashed #d8b4fe;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #9333ea;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .option-toggle .chev { transition: transform 0.2s; font-size: 13px; }
+  .option-toggle.open .chev { transform: rotate(180deg); }
+  .option-panel {
+    display: none;
+    background: white;
+    border: 2px solid #f3e8ff;
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    margin-top: -6px;
+    margin-bottom: 4px;
+    padding: 4px 16px 14px;
+  }
+  .option-panel.open { display: block; }
+  .option-note {
+    font-size: 13px;
+    color: #7c3aed;
+    background: #faf5ff;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 10px 0;
+    line-height: 1.6;
+  }
+  .option-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f3e8ff;
+    font-size: 14px;
+  }
+  .option-item:last-child { border-bottom: none; }
+  .option-time { font-weight: 800; color: #9333ea; white-space: nowrap; min-width: 92px; }
+  .option-place { font-weight: 700; }
+  .option-desc { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+
   /* ========== 小遣い帳 ========== */
   .kakeibo-hero {
     background: linear-gradient(135deg, #f59e0b, #ef4444);
@@ -920,6 +971,54 @@
         </div>
 
       </div>
+
+      <!-- オプション案 -->
+      <button class="option-toggle" id="opt1-toggle" onclick="toggleOption('opt1')">
+        <span>🔀 オプション案：京東市場＋ソンガネタッカンマリコース</span>
+        <span class="chev">▼</span>
+      </button>
+      <div class="option-panel" id="opt1-panel">
+        <div class="option-note">
+          💡 JunoHairのあと明洞ではなく祭基洞・新設洞エリアへ移動するコース。京東市場でごま油購入＆軽くカルグクス、夕飯はソンガネタッカンマリ。<br>
+          ⚠️ この案を選ぶ場合、「明洞コスメ＆夜食」（20:45〜22:00）は無しになります（3日目のラストショッピングで代替）。宿到着は22:30頃予定。
+        </div>
+        <div class="option-item">
+          <div class="option-time">18:40〜19:10</div>
+          <div>
+            <div class="option-place">🚇 移動：明洞→祭基洞</div>
+            <div class="option-desc">地下鉄4号線→1号線（東大門で乗換）約30分</div>
+          </div>
+        </div>
+        <div class="option-item">
+          <div class="option-time">19:10〜19:50</div>
+          <div>
+            <div class="option-place">🏮 京東市場 散策＋光州キルムチッでごま油購入</div>
+            <div class="option-desc">創業40年の名店。搾りたてごま油・えごま油をお土産に</div>
+          </div>
+        </div>
+        <div class="option-item">
+          <div class="option-time">19:50〜20:20</div>
+          <div>
+            <div class="option-place">🍜 安東チプで軽くカルグクス</div>
+            <div class="option-desc">京東市場内。安東式・煮干しベースのマイルドなスープ</div>
+          </div>
+        </div>
+        <div class="option-item">
+          <div class="option-time">20:30〜21:50</div>
+          <div>
+            <div class="option-place">🍗 ソンガネタッカンマリで夕飯</div>
+            <div class="option-desc">新設洞・崇仁洞。ニンニク香るあっさり鶏スープ</div>
+          </div>
+        </div>
+        <div class="option-item">
+          <div class="option-time">22:00〜22:30</div>
+          <div>
+            <div class="option-place">🏠 宿へ移動・帰着</div>
+            <div class="option-desc">新設洞→弘大入口、地下鉄2号線で約30分（乗換なし）</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1860,6 +1959,12 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (name === 'kakeibo') renderKakeibo();
     if (name === 'map') { setTimeout(function(){ if(window._initSeoulMap) window._initSeoulMap(); }, 150); }
+  }
+
+  /* ===== オプション案 ===== */
+  function toggleOption(id) {
+    document.getElementById(id + '-toggle').classList.toggle('open');
+    document.getElementById(id + '-panel').classList.toggle('open');
   }
 
   /* ===== チェックリスト ===== */
