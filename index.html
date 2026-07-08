@@ -1638,11 +1638,13 @@
         .mcat-btn.c-food { border:2px solid #ef4444; color:#ef4444; }
         .mcat-btn.c-sight { border:2px solid #3b82f6; color:#3b82f6; }
         .mcat-btn.c-shop { border:2px solid #22c55e; color:#22c55e; }
+        .mcat-btn.c-option { border:2px solid #a855f7; color:#a855f7; }
         .mcat-btn.on { color:white; }
         .mcat-btn.on.c-all { background:#6b7280; }
         .mcat-btn.on.c-food { background:#ef4444; }
         .mcat-btn.on.c-sight { background:#3b82f6; }
         .mcat-btn.on.c-shop { background:#22c55e; }
+        .mcat-btn.on.c-option { background:#a855f7; }
         .map-route-note { padding:0 16px 10px; background:white; font-size:12px; color:#9ca3af; }
         .map-spot-list { background:white; border-top:1px solid #f3f4f6; }
         .map-spot-item {
@@ -1669,6 +1671,7 @@
         <button class="mcat-btn c-food" id="mcat-food" onclick="filterMapCat('food')">🍽 食事</button>
         <button class="mcat-btn c-sight" id="mcat-sight" onclick="filterMapCat('sight')">🏛 観光</button>
         <button class="mcat-btn c-shop" id="mcat-shop" onclick="filterMapCat('shop')">🛍 買物</button>
+        <button class="mcat-btn c-option" id="mcat-option" onclick="filterMapCat('option')">🔀 候補地</button>
       </div>
       <div class="map-route-note">💡 日程を選ぶと訪問順の番号とルートが表示されます</div>
       <!-- 地図 -->
@@ -1704,10 +1707,15 @@
       {name:'神仙ソルロンタン 明洞店', lat:37.5636, lng:126.9838, cat:'food', d:'3日目', time:'10:30', o:1, icon:'🍲'},
       {name:'BHCチキン明洞本店', lat:37.5631, lng:126.9853, cat:'food', d:'3日目', time:'11:50', o:2, icon:'🍗'},
       // 宿（常に表示）
-      {name:'東橋洞の家（宿）', lat:37.5546, lng:126.9250, cat:'sight', d:'宿', time:'', o:0, icon:'🏠'}
+      {name:'東橋洞の家（宿）', lat:37.5546, lng:126.9250, cat:'sight', d:'宿', time:'', o:0, icon:'🏠'},
+      // オプション案（1日目：京東市場＋ソンガネタッカンマリコース／未確定）
+      {name:'京東市場', lat:37.5787, lng:127.0368, cat:'option', d:'候補', time:'', o:0, icon:'🏮'},
+      {name:'光州キルムチッ（ごま油店）', lat:37.5790, lng:127.0374, cat:'option', d:'候補', time:'', o:0, icon:'🫙'},
+      {name:'安東チプ（カルグクス）', lat:37.5784, lng:127.0370, cat:'option', d:'候補', time:'', o:0, icon:'🍜'},
+      {name:'ソンガネタッカンマリ', lat:37.5745, lng:127.0235, cat:'option', d:'候補', time:'', o:0, icon:'🍗'}
     ];
 
-    var colors = {food:'#ef4444', sight:'#3b82f6', shop:'#22c55e'};
+    var colors = {food:'#ef4444', sight:'#3b82f6', shop:'#22c55e', option:'#a855f7'};
 
     function makeIcon(color, emoji, num) {
       var badge = num
@@ -1721,7 +1729,7 @@
     }
 
     function visible(s) {
-      var dayOk = (curDay === 'all') || (s.d === curDay) || (s.d === '宿');
+      var dayOk = (curDay === 'all') || (s.d === curDay) || (s.d === '宿') || (s.d === '候補');
       var catOk = (curCat === 'all') || (s.cat === curCat);
       return dayOk && catOk;
     }
@@ -1791,7 +1799,9 @@
       }).addTo(map);
 
       spots.forEach(function(s) {
-        var sub = s.d === '宿' ? '宿泊（2泊）' : s.d + (s.time ? '　' + s.time + '〜' : '');
+        var sub = s.d === '宿' ? '宿泊（2泊）' :
+                  s.d === '候補' ? '🔀 1日目オプション案・未確定' :
+                  s.d + (s.time ? '　' + s.time + '〜' : '');
         var m = L.marker([s.lat, s.lng], {icon: makeIcon(colors[s.cat], s.icon)})
           .bindPopup('<b>'+s.icon+' '+s.name+'</b><br><span style="color:#6b7280;font-size:13px">'+sub+'</span>');
         m.spot = s;
