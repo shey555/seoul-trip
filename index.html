@@ -1090,7 +1090,16 @@
 
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-time">11:00〜11:50</div>
+          <div class="timeline-time">11:00〜11:10</div>
+          <div class="timeline-card shop">
+            <div class="timeline-place">👜 Pleats Mama（広蔵市場内）</div>
+            <div class="timeline-desc">100%リサイクル素材の伸縮バッグ。パソコンも入るビッグボウバッグ₩129,000〜。日本未上陸ブランド。</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">11:10〜11:50</div>
           <div class="timeline-card fun">
             <div class="timeline-place">🏮 広蔵市場 散策</div>
             <div class="timeline-desc">100年の歴史ある伝統市場。ビビンバ・チヂミ・キンパなどの屋台をひやかしながら。</div>
@@ -1104,15 +1113,6 @@
             <div class="timeline-place">🍜 コヒャンソンカルグクス（広蔵市場内）</div>
             <div class="timeline-desc">市場の中にある手打ち麺の名店。₩1〜10,000のコスパ最強ランチ！肉なし麺で胃を休める。</div>
             <span class="timeline-badge badge-highlight">💚 肉休め・コスパ最強</span>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-time">12:45〜13:20</div>
-          <div class="timeline-card food">
-            <div class="timeline-place">🍡 広蔵市場チャプサルクァベギ</div>
-            <div class="timeline-desc">もちもちの韓国揚げドーナツ。市場散策のおやつに最適！安くてクセになる味。</div>
           </div>
         </div>
 
@@ -1139,15 +1139,6 @@
         <div class="timeline-item">
           <div class="timeline-dot"></div>
           <div class="timeline-time">17:00〜17:30</div>
-          <div class="timeline-card shop">
-            <div class="timeline-place">👜 Pleats Mama</div>
-            <div class="timeline-desc">100%リサイクル素材の伸縮バッグ。パソコンも入るビッグボウバッグ₩129,000〜。日本未上陸ブランド。</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-time">17:30〜18:00</div>
           <div class="timeline-card shop">
             <div class="timeline-place">👘 Juuneedu Showroom</div>
             <div class="timeline-desc">インスタで話題のパジャマブランド。約3,000円でおそろいパジャマをゲット！</div>
@@ -1355,10 +1346,18 @@
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
           <div class="check-box">✓</div>
+          <div class="check-icon">👜</div>
+          <div>
+            <div class="check-name">Pleats Mama（広蔵市場内）</div>
+            <div class="check-time">2日目 11:00 · 広蔵市場</div>
+          </div>
+        </div>
+        <div class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box">✓</div>
           <div class="check-icon">🏪</div>
           <div>
             <div class="check-name">広蔵市場 散策</div>
-            <div class="check-time">2日目 11:00 · 広蔵市場</div>
+            <div class="check-time">2日目 11:10 · 広蔵市場</div>
           </div>
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
@@ -1395,18 +1394,10 @@
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
           <div class="check-box">✓</div>
-          <div class="check-icon">👜</div>
-          <div>
-            <div class="check-name">Pleats Mama</div>
-            <div class="check-time">2日目 17:00 · 江南</div>
-          </div>
-        </div>
-        <div class="checklist-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
           <div class="check-icon">🧥</div>
           <div>
             <div class="check-name">Juuneedu（パジャマ）</div>
-            <div class="check-time">2日目 17:30 · 江南</div>
+            <div class="check-time">2日目 17:00 · 江南</div>
           </div>
         </div>
         <div class="checklist-item" onclick="toggleCheck(this)">
@@ -1761,13 +1752,14 @@
       // 2日目（訪問順）
       {name:'弘大近くでベーグル＆クロワッサン', lat:37.5563, lng:126.9236, cat:'food', d:'2日目', time:'08:00', o:1, icon:'🥐'},
       {name:'中部市場（ごま油購入）', lat:37.5665, lng:127.0108, cat:'shop', d:'2日目', time:'10:30', o:2, icon:'🫙'},
-      {name:'広蔵市場', lat:37.5694, lng:127.0096, cat:'sight', d:'2日目', time:'11:00', o:3, icon:'🏪'},
-      {name:'コヒャンソンカルグクス', lat:37.5698, lng:127.0104, cat:'food', d:'2日目', time:'12:00', o:4, icon:'🍜'},
-      {name:'漢南洞エリア（リウム美術館）', lat:37.5360, lng:127.0023, cat:'shop', d:'2日目', time:'14:00', o:5, icon:'🛍'},
-      {name:'COEX（江南）', lat:37.5128, lng:127.0592, cat:'shop', d:'2日目', time:'16:00', o:6, icon:'🏢'},
-      {name:'Juuneedu（パジャマ）', lat:37.5560, lng:126.9240, cat:'shop', d:'2日目', time:'17:30', o:7, icon:'👘'},
-      {name:'ヨンチョンヨンファ（韓牛）', lat:37.5242, lng:127.0469, cat:'food', d:'2日目', time:'19:00', o:8, icon:'🥩'},
-      {name:'Sanullim1992（マッコリ）', lat:37.5555, lng:126.9245, cat:'food', d:'2日目', time:'21:00', o:9, icon:'🍶'},
+      {name:'Pleats Mama（広蔵市場内）', lat:37.5694, lng:127.0096, cat:'shop', d:'2日目', time:'11:00', o:3, icon:'👜'},
+      {name:'広蔵市場', lat:37.5694, lng:127.0096, cat:'sight', d:'2日目', time:'11:10', o:4, icon:'🏪'},
+      {name:'コヒャンソンカルグクス', lat:37.5698, lng:127.0104, cat:'food', d:'2日目', time:'12:00', o:5, icon:'🍜'},
+      {name:'漢南洞エリア（リウム美術館）', lat:37.5360, lng:127.0023, cat:'shop', d:'2日目', time:'14:00', o:6, icon:'🛍'},
+      {name:'COEX（江南）', lat:37.5128, lng:127.0592, cat:'shop', d:'2日目', time:'16:00', o:7, icon:'🏢'},
+      {name:'Juuneedu（パジャマ）', lat:37.5560, lng:126.9240, cat:'shop', d:'2日目', time:'17:00', o:8, icon:'👘'},
+      {name:'ヨンチョンヨンファ（韓牛）', lat:37.5242, lng:127.0469, cat:'food', d:'2日目', time:'19:00', o:9, icon:'🥩'},
+      {name:'Sanullim1992（マッコリ）', lat:37.5555, lng:126.9245, cat:'food', d:'2日目', time:'21:00', o:10, icon:'🍶'},
       // 3日目（訪問順）
       {name:'ロンドンベーグルミュージアム', lat:37.5825, lng:126.9851, cat:'food', d:'3日目', time:'08:30', o:1, icon:'🥯'},
       {name:'北村韓屋村', lat:37.5826, lng:126.9840, cat:'sight', d:'3日目', time:'09:15', o:2, icon:'🏘'},
